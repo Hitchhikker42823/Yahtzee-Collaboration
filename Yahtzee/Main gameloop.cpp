@@ -1,5 +1,5 @@
 
-#include "Functions.h"
+#include "PlayerClass.cpp"
 #include <iostream>
 #include <vector>
 #include <string>
@@ -10,16 +10,18 @@ using namespace std;
 
 int main()
 {
+	Player player0;
+
 	while (true)
 	{
-		vector<int> currentHand = roll5Dice(); //when the user is done with their hand, roll a whole new one
+		player0.roll5Dice(); //when the user is done with their hand, roll a whole new one
 
 		while (true)
 		{
 			//print hand, prompt for removal, refill, print again
-			printCurrentHand(currentHand);
-			currentHand = removeAndRefill(currentHand);
-			printCurrentHand(currentHand);
+			player0.printCurrentHand();
+			player0.removeAndRefill();
+			player0.printCurrentHand();
 
 			//logig to break the while loop if the user wants to keep their hand
 			cout << "KeepHand?\n"; //@DEBUG
