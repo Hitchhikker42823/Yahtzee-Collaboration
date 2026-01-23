@@ -71,6 +71,8 @@ vector<int> removeFromHand(vector<int> inputHand, vector<int> numbersToRemove)
 	return inputHand;
 }
 
+
+//@TODO replace with a GUI eventually
 vector<int> askForNumbersToRemove()
 {
 	vector<int> numbersToRemove = {};
@@ -88,4 +90,26 @@ vector<int> askForNumbersToRemove()
 
 
 	return numbersToRemove;
+}
+
+//Just rolls and adds numbers until the hand has 5 dice in it
+vector<int> fillHandTo5(vector<int> inputHand)
+{
+	while (inputHand.size() < 5)
+	{
+		inputHand.push_back(rollOne());
+	}
+
+	return inputHand;
+}
+
+//a combination function that prompts for numbers to remove, 
+//removes them, and then returns the refilled hand
+vector<int> removeAndRefill(vector<int> inputHand)
+{
+	vector<int> numbersToRemove = askForNumbersToRemove();
+	vector<int> keptDice = removeFromHand(inputHand, numbersToRemove);
+	vector<int> finalHand = fillHandTo5(keptDice);
+
+	return finalHand;
 }

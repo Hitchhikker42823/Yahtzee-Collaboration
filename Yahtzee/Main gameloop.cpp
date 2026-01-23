@@ -10,16 +10,29 @@ using namespace std;
 
 int main()
 {
-	vector<int> currentHand = roll5Dice();
+	while (true)
+	{
+		vector<int> currentHand = roll5Dice(); //when the user is done with their hand, roll a whole new one
 
+		while (true)
+		{
+			//print hand, prompt for removal, refill, print again
+			printCurrentHand(currentHand);
+			currentHand = removeAndRefill(currentHand);
+			printCurrentHand(currentHand);
 
-	printCurrentHand(currentHand);
-
-	vector<int> numbersToBeRemoved = askForNumbersToRemove();
+			//logig to break the while loop if the user wants to keep their hand
+			cout << "KeepHand?\n"; //@DEBUG
+			string userInput = "";
+			getline(cin, userInput);
+			if (userInput == "KeepHand")
+			{
+				cout << "Hand Kept! Restarting game.\n";
+				break;
+			}
+		}
+	}
 	
-	currentHand = removeFromHand(currentHand, numbersToBeRemoved);
-
-	printCurrentHand(currentHand);
 
 
 	return 0;
