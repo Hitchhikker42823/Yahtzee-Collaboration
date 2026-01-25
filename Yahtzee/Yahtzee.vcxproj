@@ -126,8 +126,13 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="FunctionDefinitions.cpp" />
     <ClCompile Include="Main gameloop.cpp" />
     <ClCompile Include="PlayerClass.cpp" />
+    <ClCompile Include="UIElements.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="FunctionDeclarations.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

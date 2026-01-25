@@ -1,20 +1,24 @@
+#pragma once
 
-#include "PlayerClass.cpp"
 #include <iostream>
 #include <vector>
 #include <string>
 #include <random>
+
+#include "PlayerClass.cpp"
+#include "UIElements.cpp"
 using namespace std;
 
 
 
 int main()
 {
+	cout << UITitleCard; //@DEBUG
 	Player player0;
 
 	while (true)
 	{
-		player0.roll5Dice(); //when the user is done with their hand, roll a whole new one
+		player0.FullNewHand(); //when the user is done with their hand, roll a whole new one
 
 		while (true)
 		{
@@ -23,13 +27,15 @@ int main()
 			player0.removeAndRefill();
 			player0.printCurrentHand();
 
-			//logig to break the while loop if the user wants to keep their hand
-			cout << "KeepHand?\n"; //@DEBUG
+			//logic to break the while loop if the user wants to keep their hand
+			cout << "\nDo you want to keep your hand? (Yes/Y)\n"; //@DEBUG
+			clearScreen();
 			string userInput = "";
 			getline(cin, userInput);
-			if (userInput == "KeepHand")
+			StoUpper(userInput);
+			if (userInput == "YES" || userInput == "Y")
 			{
-				cout << "Hand Kept! Restarting game.\n";
+				cout << "\nHand Kept! Restarting game.\n";
 				break;
 			}
 		}

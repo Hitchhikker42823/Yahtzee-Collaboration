@@ -1,4 +1,5 @@
 #pragma once
+#include "UIElements.cpp"
 #include <vector>
 #include <cstdlib>
 #include <iostream>
@@ -51,20 +52,41 @@ public:
 	{
 		for (int i = 0; i < currentHand.size(); i++)
 		{
-			cout << currentHand[i] << " \n";
+			switch (currentHand[i])
+			{
+			case 1:
+				cout << UIDieImage1;
+				break;
+			case 2:
+				cout << UIDieImage2;
+				break;
+			case 3:
+				cout << UIDieImage3;
+				break;
+			case 4:
+				cout << UIDieImage4;
+				break;
+			case 5:
+				cout << UIDieImage5;
+				break;
+			case 6:
+				cout << UIDieImage6;
+				break;
+			default:
+				cout << "\nInvalid die value in this hand location\n";
+			}
 		}
 
 		return;
 	}
-
-	//rolls 5 dice and returns a full hand. 
+ 
 
 	void FullNewHand()
 	{
-		//hands are only 5 big; rolling 5 dice means we can just throw away the old hand
+		//throw away the old hand
 		currentHand = {};
 
-
+		//roll until hand is full
 		for (int i = 0; i < maxHandSize; i++)
 		{
 
@@ -107,7 +129,7 @@ public:
 		string input = "";
 		int singularValue;
 
-		cout << "Please enter numbers to remove:\n";
+		cout << "\nPlease enter numbers to remove:\n";
 		getline(cin, input);
 
 		stringstream ss(input); //turns the input into a stream like cin
