@@ -1,6 +1,4 @@
 #pragma once
-#include <string>
-#include <iostream>
 using namespace std;
 
 
@@ -61,30 +59,6 @@ const char UITitleCard[] = R"(
 \-------------------------------------------------------/
 )";
 
-const char promptToKeep[] =
-R"(Do you want to keep this hand and add it to the score card?
-[1] - Keep hand
-[2] - Roll again
-)";
-
-//A function to convert a string to all uppercase
-//note that unlike stoi() and similar, this is pass by reference and modifies the original string
-inline void StoUpper(string& inputString)
-{
-	for (char& c : inputString) {
-		c = std::toupper(c);
-	}
-
-	return;
-}
-
-
-inline void clearScreen() {
-	cout << "\033[2J\033[H";
-}
 
 
 //@TODO do a buttload of work to make them print on one line
-
-
-//

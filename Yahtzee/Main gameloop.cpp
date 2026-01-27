@@ -28,15 +28,19 @@ int main()
 			player0.printCurrentHand();
 
 			//logic to break the while loop if the user wants to keep their hand
-			cout << "\nDo you want to keep your hand? (Yes/Y)\n"; //@DEBUG
+			cout << promptToKeep;
 			clearScreen();
 			string userInput = "";
 			getline(cin, userInput);
 			StoUpper(userInput);
-			if (userInput == "YES" || userInput == "Y")
+			if (userInput == "1")
 			{
 				cout << "\nHand Kept! Restarting game.\n";
 				break;
+			}
+			else if (userInput == "2")
+			{
+				//@TODO: REROLL
 			}
 		}
 	}
