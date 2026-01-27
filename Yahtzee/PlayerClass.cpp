@@ -188,6 +188,13 @@ public:
 			}
 		}
 
+		//only allow to add things if the scorecard slot is empty
+		if (scoreCard[sectionToSet - 1] != -1)
+		{
+			//there was already something there
+			cout << "There is already something in this score space\n";
+			return 2;
+		}
 		//if the user tries to 0 something, check
 		if (runningTotal == 0)
 		{
@@ -198,7 +205,7 @@ public:
 				string userInput = "";
 				getline(cin, userInput);
 				StoUpper(userInput);
-				if (userInput == "Y" && scoreCard[sectionToSet - 1] == -1) //if user confirms and we haven't already put something here
+				if (userInput == "Y") //if user confirms and we haven't already put something here
 				{
 					scoreCard[sectionToSet - 1] = 0;
 					return 0;
@@ -208,11 +215,16 @@ public:
 					return 1; //error code 
 				}
 			}
-
+		}
+		//total != 0
+		else
+		{
 			scoreCard[sectionToSet - 1] = runningTotal;
-
 			return 0;
 		}
+		
+
+		return -1; //unreachable fallthrough return
 	}
 
 	//--------------------------------------------------------------------------------------//
@@ -241,15 +253,15 @@ public:
 			}
 		}
 		
-		
-		//if it's 3oaK and scorecard place hasn't been written to yet, add it
-		if (count == 3 && scoreCard[6] == -1)
+		//if scorecard slot empty
+		if (scoreCard[6] != -1)
 		{
-			scoreCard[6] = runningTotal;
-			return 0;
+			cout << "There is already something in this score space\n";
+			return 2;
 		}
+
 		//user must confrim they want to zero a space
-		else if (count < 3)
+		if (count < 3)
 		{
 			cout << "This is not a 3 of a kind. Are you sure you want to zero this? (Y/N)\n";
 
@@ -258,7 +270,7 @@ public:
 				string userInput = "";
 				getline(cin, userInput);
 				StoUpper(userInput);
-				if (userInput == "Y" && scoreCard[6] == -1)
+				if (userInput == "Y")
 				{
 					scoreCard[6] = 0;
 					return 0;
@@ -268,9 +280,16 @@ public:
 					return 1;
 				}
 			}
-			
 		}
-		return 2; //this should not be reached
+		//valid 3oaK
+		else
+		{
+			scoreCard[6] = runningTotal;
+			return 0;
+		}
+
+		return -1; //unreachable fallthrough return
+
 	}
 
 	//--------------------------------------------------------------------------------------//
@@ -300,14 +319,14 @@ public:
 			}
 		}
 
-		//if it's 4oaK and scorecard place hasn't been written to yet, add it
-		if (count == 4 && scoreCard[7] == -1)
+		if (scoreCard[7] != -1)
 		{
-			scoreCard[7] = runningTotal;
-			return 0;
+			cout << "There is already something in this score space\n";
+			return 2;
 		}
-		//user must confrim they want to zero a space
-		else if (count < 4)
+		
+		//if we didn't count 4 dice of the same kind, prompt to 0
+		if (count < 4)
 		{
 			cout << "This is not a 4 of a kind. Are you sure you want to zero this? (Y/N)\n";
 
@@ -326,9 +345,15 @@ public:
 					return 1;
 				}
 			}
-
 		}
-		return 2; //this should not be reached
+		//valid 4oaK
+		else
+		{
+			scoreCard[7] = runningTotal;
+			return 0;
+		}
+
+		return -1; //unreachable fallthrough return
 	}
 
 	//--------------------------------------------------------------------------------------//
@@ -336,6 +361,12 @@ public:
 	int setFullHouse()
 	{
 		int count = 0;
+
+		if (scoreCard[8] != -1)
+		{
+			cout << "There is already something in this score space\n";
+			return 2;
+		}
 
 		for (int j = 0; j < 6; j++)
 		{
@@ -372,14 +403,10 @@ public:
 			count = 0;
 		}
 
-		//if it got through everything above it must be a full house
-		if (scoreCard[8] == -1)
-		{
-			scoreCard[8] = 25;
-			return 0;
-		}
+		//if above didn't fail it must be a full house
+		scoreCard[8] = 25;
+		return 0;
 		
-		return 2; //should not be reached
 	}
 
 	//--------------------------------------------------------------------------------------//
@@ -403,12 +430,15 @@ public:
 			} //@DEBUG this logic might not be sound
 		}
 
-		if (count >= 4 && scoreCard[9] == -1)
+		//only if scorecard slot is empty
+		if (scoreCard[9] != -1)
 		{
-			scoreCard[9] = 30;
-			return 0;
+			cout << "There is already something in this score space\n";
+			return 2;
 		}
-		else
+
+		//confrim a zero
+		if (count < 4)
 		{
 			cout << "This is not a small straight. Are you sure you want to zero this? (Y/N)\n";
 
@@ -428,6 +458,14 @@ public:
 				}
 			}
 		}
+		//valid small straight
+		else
+		{
+			scoreCard[9] = 30;
+			return 0;
+		}
+
+		return -1; //unreachable fallthrough return
 	}
 	
 	//--------------------------------------------------------------------------------------//
@@ -438,6 +476,12 @@ public:
 		sort(currentHand.begin(), currentHand.end());
 
 		int count = 0;
+
+		if (scoreCard[10] != -1)
+		{
+			cout << "There is already something in this score space\n";
+			return 2;
+		}
 
 		for (int i = 0; i < maxHandSize - 1; i++)
 		{
@@ -462,14 +506,12 @@ public:
 				}
 			}
 		}
+		
+		//if above didn't fail it's a valid large straight
+		scoreCard[10] = 40;
+		return 0;
 
-		if (scoreCard[10] == -1)
-		{
-			scoreCard[10] = 40;
-			return 0;
-		}
-
-		return 2; //should not be reached
+		return -1; //unreachable fallthrough return
 	}
 
 	//--------------------------------------------------------------------------------------//
@@ -479,6 +521,12 @@ public:
 		int numberOnTheDie = 0;
 		numberOnTheDie = currentHand[0];
 
+		if (scoreCard[11] == -1)
+		{
+				cout << "There is already something in this score space\n";
+				return 2;
+		}
+		
 		for (int i = 0; i < maxHandSize; i++)
 		{
 			if (currentHand[i] != numberOnTheDie)
@@ -508,9 +556,34 @@ public:
 			}
 			//@TODO: Add bonus yahtzee here
 		}
+		
+		return -1; //unreachable fallthrough return
+	}
 
-		return 2; //should not be reached
+
+	int setChance()
+	{
+		int runningTotal = 0;
+		for (int i = 0; i < maxHandSize; i++)
+		{
+				runningTotal += currentHand[i];
+		}
+
+		if (scoreCard[12] != -1)
+		{
+			cout << "There is already something in this score space\n";
+			return 2;
+		}
+		else
+		{
+			scoreCard[12] = runningTotal;
+			return 0;
+		}
+
+		return -1; //unreachable fallthrough return
 	}
 };
 
-//@TODO reduce magic numbers by defining a bunch of constants
+
+//@TODO: What the hell is a bonus yahtzee
+//@TODO: reduce magic numbers by defining a bunch of constants

@@ -15,34 +15,84 @@ int main()
 {
 	cout << UITitleCard; //@DEBUG
 	Player player0;
+	int roundsRemaining = 13;
 
-	while (true)
+	while (roundsRemaining > 0)
 	{
-		player0.FullNewHand(); //when the user is done with their hand, roll a whole new one
+		roundsRemaining--;
 
-		while (true)
+		player0.FullNewHand(); //when the user is done with their hand, roll a whole new one
+		int rerollsRemaining = 3;
+
+		while (rerollsRemaining > 0)
 		{
-			//print hand, prompt for removal, refill, print again
-			player0.printCurrentHand();
-			player0.removeAndRefill();
+			cout << "\n\n\n" << rerollsRemaining << "\n\n\n"; //@DEBUG
+			rerollsRemaining--;
+
+			//print hand
 			player0.printCurrentHand();
 
 			//logic to break the while loop if the user wants to keep their hand
 			cout << promptToKeep;
-			clearScreen();
+
 			string userInput = "";
-			getline(cin, userInput);
-			StoUpper(userInput);
-			if (userInput == "1")
+			while (userInput != "1" || userInput != "2")
 			{
-				cout << "\nHand Kept! Restarting game.\n";
-				break;
+				userInput = "";
+				getline(cin, userInput);
+				StoUpper(userInput);
+				if (userInput == "1")
+				{
+					cout << scoreCardSelectionUI;
+					char cardPlaceSelected = '\0';	
+					cin >> cardPlaceSelected;
+					cardPlaceSelected = toupper(cardPlaceSelected);
+					
+					int ScoreAssignmentSucceeded = 1;
+					while (ScoreAssignmentSucceeded != 0)
+					{
+						int inputAsInt = cardPlaceSelected - '0'; //ASCII math
+						switch (cardPlaceSelected) {
+						case '1': case '2': case '3':
+						case '4': case '5': case '6':
+							ScoreAssignmentSucceeded = player0.setUpperSection(inputAsInt);
+							break;
+						case 'Q':
+							ScoreAssignmentSucceeded = player0.set3oaK();
+							break;
+						case 'W':
+							ScoreAssignmentSucceeded = player0.set4oaK();
+							break;
+						case 'E':
+							ScoreAssignmentSucceeded = player0.setFullHouse();
+							break;
+						case 'R':
+							ScoreAssignmentSucceeded = player0.setSmallStraight();
+							break;
+						case 'T':
+							ScoreAssignmentSucceeded = player0.setLargeStraight();
+							break;
+						case 'Y':
+							ScoreAssignmentSucceeded = player0.setYahtzee();
+							break;
+						case 'U':
+							ScoreAssignmentSucceeded = player0.setChance();
+							break;
+						}
+					}
+					break; //get a new hand
+
+				}
+				else if (userInput == "2")
+				{
+					player0.removeAndRefill();
+					break;
+				}
 			}
-			else if (userInput == "2")
-			{
-				//@TODO: REROLL
-			}
+
 		}
+
+
 	}
 	
 

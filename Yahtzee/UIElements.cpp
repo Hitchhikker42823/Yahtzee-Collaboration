@@ -62,9 +62,30 @@ const char UITitleCard[] = R"(
 )";
 
 const char promptToKeep[] =
-R"(Do you want to keep this hand and add it to the score card?
+R"(
+Do you want to keep this hand and add it to the score card?
 [1] - Keep hand
 [2] - Roll again
+)";
+
+const char scoreCardSelectionUI[] =
+R"(
+Where do you want to put this hand?
+[1] - 1s
+[2] - 2s
+[3] - 3s
+[4] - 4s
+[5] - 5s
+[6] - 6s
+
+[Q] - 3 of a Kind
+[W] - 4 of a Kind
+[E] - Full House
+[R] - Small Straight
+[T] - Large Straight
+[Y] - Yahtzee
+[U] - Chance
+
 )";
 
 //A function to convert a string to all uppercase
