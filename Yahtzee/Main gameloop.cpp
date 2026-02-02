@@ -1,4 +1,3 @@
-#pragma once
 
 #include <iostream>
 #include <vector>
@@ -6,91 +5,83 @@
 #include <random>
 
 #include "PlayerClass.cpp"
-#include "UIElements.cpp"
+#include "UIElementsr.h"
 using namespace std;
 
 
 
 int main()
 {
-	cout << UITitleCard; //@DEBUG
+	cout << UITitleCard << "\n";
+	cout << "Press any key to contiue...";
+	string dummyString = ""; //to wait for input
+	getline(cin, dummyString);
+
+
 	Player player0;
-	int roundsRemaining = 13;
+	int roundsRemaining = 13; //start a new game
 
 	while (roundsRemaining > 0)
 	{
-		roundsRemaining--;
+		roundsRemaining--; //advance turn count
 
-		player0.FullNewHand(); //when the user is done with their hand, roll a whole new one
-		int rerollsRemaining = 3;
+
+		player0.FullNewHand(); //Roll a whole new hand
+		int rerollsRemaining = 2; //start a new turn
+		
+		clearScreen();
+		cout << "A new round has begun\n";
+		cout << "Rounds remaining: " << roundsRemaining +1 << "\n"; //1 index vs 0 index
+
+		//it feels a lot better if you press a key for the first hand
+		cout << "Press any key to roll the first set of dice\n";
+		string dummyString = ""; //to wait for input
+		getline(cin, dummyString);
 
 		while (rerollsRemaining > 0)
 		{
-			cout << "\n\n\n" << rerollsRemaining << "\n\n\n"; //@DEBUG
-			rerollsRemaining--;
 
+			rerollsRemaining--; //advance number of rolls per turn
+			
 			//print hand
+			clearScreen();
 			player0.printCurrentHand();
-
+			cout << "Rolls Left: " << rerollsRemaining +1 << "\n"; //1 index vs 0 index
+			
 			//logic to break the while loop if the user wants to keep their hand
 			cout << promptToKeep;
-
 			string userInput = "";
-			while (userInput != "1" || userInput != "2")
+			while (userInput != "1" && userInput != "2")
 			{
 				userInput = "";
 				getline(cin, userInput);
 				StoUpper(userInput);
-				if (userInput == "1")
-				{
-					cout << scoreCardSelectionUI;
-					char cardPlaceSelected = '\0';	
-					cin >> cardPlaceSelected;
-					cardPlaceSelected = toupper(cardPlaceSelected);
-					
-					int ScoreAssignmentSucceeded = 1;
-					while (ScoreAssignmentSucceeded != 0)
-					{
-						int inputAsInt = cardPlaceSelected - '0'; //ASCII math
-						switch (cardPlaceSelected) {
-						case '1': case '2': case '3':
-						case '4': case '5': case '6':
-							ScoreAssignmentSucceeded = player0.setUpperSection(inputAsInt);
-							break;
-						case 'Q':
-							ScoreAssignmentSucceeded = player0.set3oaK();
-							break;
-						case 'W':
-							ScoreAssignmentSucceeded = player0.set4oaK();
-							break;
-						case 'E':
-							ScoreAssignmentSucceeded = player0.setFullHouse();
-							break;
-						case 'R':
-							ScoreAssignmentSucceeded = player0.setSmallStraight();
-							break;
-						case 'T':
-							ScoreAssignmentSucceeded = player0.setLargeStraight();
-							break;
-						case 'Y':
-							ScoreAssignmentSucceeded = player0.setYahtzee();
-							break;
-						case 'U':
-							ScoreAssignmentSucceeded = player0.setChance();
-							break;
-						}
-					}
-					break; //get a new hand
+			}
 
-				}
-				else if (userInput == "2")
-				{
-					player0.removeAndRefill();
-					break;
-				}
+			//if user selected to keep their hand, do the logic to verify and 
+			if (userInput == "1")
+			{
+				player0.printScoreCard();
+				player0.placeHandInScorecard();
+				break; //after succeeding in placing the new score, 
+
+			}
+
+			//if the player does not want to keep this hand,
+			//remove the selected dice and reroll
+			else if (userInput == "2")
+			{
+				player0.removeAndRefill();
 			}
 
 		}
+
+		//if we reach the end of 3 rolls, force to place in scorecard
+		clearScreen();
+		player0.printCurrentHand();
+		cout << "You have run out of rerolls. Please choose something to place this hand in.\n";
+		player0.printScoreCard();
+		player0.placeHandInScorecard();
 
 
 	}

@@ -21,10 +21,7 @@
     <ClCompile Include="PlayerClass.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="UIElements.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="FunctionDefinitions.cpp">
+    <ClCompile Include="UIElementsr.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -32,5 +29,13 @@
     <ClInclude Include="FunctionDeclarations.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="UIElementsr.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="Text.txt">
+      <Filter>Resource Files</Filter>
+    </Text>
   </ItemGroup>
 </Project>

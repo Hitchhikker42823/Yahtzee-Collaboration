@@ -1,0 +1,23 @@
+
+==========================
+|| Ones           | 111 ||
+|| Twos           | 111 ||
+|| Threes         | 111 ||
+|| Fours          | 111 ||
+|| Fives          | 111 ||
+|| Sixes          | 111 ||
+|| Bonus          | 111 ||
+==================|=======
+|| 3 of a Kind    | 111 ||
+|| 4 of a Kind    | 111 ||
+|| Full House     | 111 ||
+|| Small Straight | 111 ||
+|| Large Straight | 111 ||
+|| Yahtzee        | 111 ||
+|| Chance         | 111 ||
+|| Bonus Yahtzee  | 111 ||
+==================| ======
+|| Upper Total    | 111 ||
+|| Lower Total    | 111 ||
+|| GRAND TOTAL    | 111 ||
+==========================

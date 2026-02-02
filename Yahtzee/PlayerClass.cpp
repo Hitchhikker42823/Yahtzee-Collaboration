@@ -1,5 +1,4 @@
-#pragma once
-#include "UIElements.cpp"
+#include "UIElementsr.h" //@TODO rename
 #include <vector>
 #include <cstdlib>
 #include <iostream>
@@ -7,9 +6,9 @@
 #include <random>
 #include <string>
 #include <algorithm>
+#include <iomanip>
 using namespace std;
 
-using namespace std;
 
 class Player {
 private:
@@ -79,7 +78,79 @@ public:
 			}
 		}
 
+		cout << "\n"; //for nice formatting
+
 		return;
+	}
+
+	void printScoreCard()
+	{
+		//top section sum
+		int upperSum = 0;
+		int lowerSum = 0;
+		int totalSum = 0;
+
+		for (int i = 0; i < 6; i++) //upper sum
+		{
+			upperSum += scoreCard[i];
+		}
+
+		for (int i = 0; i < 14; i++) //lower sum
+		{
+			lowerSum += scoreCard[i];
+		}
+
+		//get total sum with bonus
+		totalSum = upperSum + lowerSum;
+		if (upperSum >= 63) { totalSum += 35; } //the upper bonus
+
+
+		for (int i = 0; i < UIScoreCardArt.size(); i++)
+		{
+			int j = 0; //for stepping through <int>scoreCard
+
+			if (UIScoreCardArt[i].size() == 27) //non score rows are 27 char long
+			{
+				cout << UIScoreCardArt[i];
+			}
+			else //score row
+			{
+				if (i == 13) //upper section bonus in UIScoreCardArt
+				{
+					cout << UIScoreCardArt[i];
+					cout << setw(3) << (upperSum >= 63) ? "35" : "0"; //35 if we got the bonus, 0 otherwise
+					cout << UIScoreCardArt[++i]; //increment and print next
+				}
+				else if (i == 33) //upper total in UIScoreCardArt
+				{
+					cout << UIScoreCardArt[i];
+					cout << setw(3) << upperSum;
+					cout << UIScoreCardArt[++i];
+				}
+				else if (i == 35) //lower total in UIScoreCardArt
+				{
+					cout << UIScoreCardArt[i];
+					cout << setw(3) << lowerSum;
+					cout << UIScoreCardArt[++i];
+				}
+				else if (i == 37) //full total in UIScoreCardArt
+				{
+					cout << UIScoreCardArt[i];
+					cout << setw(3) << totalSum;
+					cout << UIScoreCardArt[++i];
+				}
+				else //all other normal score
+				{
+					cout << UIScoreCardArt[i];
+					cout << setw(3) << scoreCard[j];
+					j++; //iterate through <int>scoreCard
+					cout << UIScoreCardArt[++i]; //increment and print next
+				}
+
+			}
+
+			cout << "\n";
+		}
 	}
  
 	//--------------------------------------------------------------------------------------//
@@ -170,6 +241,57 @@ public:
 		vector<int> numbersToRemove = askForNumbersToRemove();
 		removeFromHand(numbersToRemove);
 		fillHandTo5();
+
+		return;
+	}
+
+	//--------------------------------------------------------------------------------------//
+
+	//takes user input for where to place the current hand in the scorecard and then does that
+	void placeHandInScorecard()
+	{
+		cout << scoreCardSelectionUI;
+		char cardPlaceSelected = '\0'; //placeholder null character
+		cin >> cardPlaceSelected; //use cin because we only want one character
+		cardPlaceSelected = toupper(cardPlaceSelected); //caps insensitve
+
+		int ScorePlacedExitCode = 1;
+		while (ScorePlacedExitCode != 0)
+		{
+			int inputAsInt = cardPlaceSelected - '0'; //ASCII math
+			switch (cardPlaceSelected) {
+			case '1': case '2': case '3':
+			case '4': case '5': case '6':
+				ScorePlacedExitCode = setUpperSection(inputAsInt);
+				break;
+			case 'Q':
+				ScorePlacedExitCode = set3oaK();
+				break;
+			case 'W':
+				ScorePlacedExitCode = set4oaK();
+				break;
+			case 'E':
+				ScorePlacedExitCode = setFullHouse();
+				break;
+			case 'R':
+				ScorePlacedExitCode = setSmallStraight();
+				break;
+			case 'T':
+				ScorePlacedExitCode = setLargeStraight();
+				break;
+			case 'Y':
+				ScorePlacedExitCode = setYahtzee();
+				break;
+			case 'U':
+				ScorePlacedExitCode = setChance();
+				break;
+			default:
+				//this shouldn't be reached unless input validation fails
+				cout << "unexpected input passed to score placement logic\n";
+				break;
+			}
+
+		}
 
 		return;
 	}

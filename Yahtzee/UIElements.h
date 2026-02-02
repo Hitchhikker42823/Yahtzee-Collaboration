@@ -3,61 +3,19 @@ using namespace std;
 
 
 //Dice
-const char UIDieImage1[] = R"(
-===========
-||       ||
-||   O   ||
-||       ||
-===========)";
+const char UIDieImage1[];
 
-const char UIDieImage2[] = R"(
-===========
-|| O     ||
-||       ||
-||     O ||
-===========)";
+const char UIDieImage2[];
 
-const char UIDieImage3[] = R"(
-===========
-|| O     ||
-||   O   ||
-||     O ||
-===========)";
+const char UIDieImage3[];
 
-const char UIDieImage4[] = R"(
-===========
-|| O   O ||
-||       ||
-|| O   O ||
-===========)";
+const char UIDieImage4[];
 
-const char UIDieImage5[] = R"(
-===========
-|| O   O ||
-||   O   ||
-|| O   O ||
-===========)";
+const char UIDieImage5[];
 
-const char UIDieImage6[] = R"(
-===========
-|| O   O ||
-|| O   O ||
-|| O   O ||
-===========)";
+const char UIDieImage6[];
 
-const char UITitleCard[] = R"(
-/-------------------------------------------------------\
-
- __    __        __      __                            
-/\ \  /\ \      /\ \    /\ \__                         
-\ `\`\\/'/  __  \ \ \___\ \ ,_\  ____      __     __   
- `\ `\ /' /'__`\ \ \  _ `\ \ \/ /\_ ,`\  /'__`\ /'__`\ 
-   `\ \ \/\ \L\.\_\ \ \ \ \ \ \_\/_/  /_/\  __//\  __/ 
-     \ \_\ \__/.\_\\ \_\ \_\ \__\ /\____\ \____\ \____\
-      \/_/\/__/\/_/ \/_/\/_/\/__/ \/____/\/____/\/____/
-                                                       
-\-------------------------------------------------------/
-)";
+const char UITitleCard[];
 
 
 
