@@ -1,22 +1,29 @@
 #pragma once
-using namespace std;
+#include <string>
+#include <vector>
 
 
 //Dice
-const char UIDieImage1[];
+extern const char UIDieImage1[];
 
-const char UIDieImage2[];
+extern const char UIDieImage2[];
 
-const char UIDieImage3[];
+extern const char UIDieImage3[];
 
-const char UIDieImage4[];
+extern const char UIDieImage4[];
 
-const char UIDieImage5[];
+extern const char UIDieImage5[];
 
-const char UIDieImage6[];
+extern const char UIDieImage6[];
 
-const char UITitleCard[];
+//"Yahtzee"
+extern const char UITitleCard[];
 
+//Asking whether to keep or discard the hand
+extern const char promptToKeep[];
 
+//UI to ask which slot of the scorecard we place the hand into
+extern const char scoreCardSelectionUI[];
 
-//@TODO do a buttload of work to make them print on one line
+//The scorecard
+extern std::vector<std::string> UIScoreCardArt;

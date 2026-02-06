@@ -1,12 +1,8 @@
 
-#include <iostream>
-#include <vector>
-#include <string>
-#include <random>
-
-#include "PlayerClass.cpp"
-#include "UIElementsr.h"
 using namespace std;
+#include "UIElements.h"
+#include "FunctionDeclarations.h"
+#include "PlayerClass.h"
 
 
 

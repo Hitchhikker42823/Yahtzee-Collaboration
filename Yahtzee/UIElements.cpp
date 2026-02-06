@@ -2,8 +2,9 @@
 #include <iostream>
 #include <cstdlib>
 #include <vector>
-using namespace std;
 
+
+//@TODO do a buttload of work to make all dice print on one line
 
 //Dice
 extern const char UIDieImage1[] = R"(
@@ -90,7 +91,7 @@ Where do you want to put this hand?
 )";
 
 
-vector<string> UIScoreCardArt = {
+std::vector<std::string> UIScoreCardArt = {
 "==========================",
 "|| Ones           | "," ||",
 "|| Twos           | "," ||",
@@ -115,6 +116,3 @@ vector<string> UIScoreCardArt = {
 "=========================="
 };
 
-
-
-//@TODO do a buttload of work to make them print on one line
