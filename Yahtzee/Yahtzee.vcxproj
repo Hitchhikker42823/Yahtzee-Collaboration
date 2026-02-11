@@ -129,10 +129,12 @@
     <ClCompile Include="Main gameloop.cpp" />
     <ClCompile Include="PlayerClass.cpp" />
     <ClCompile Include="UIElements.cpp" />
+    <ClCompile Include="UIElements-Legacy.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="FunctionDeclarations.h" />
     <ClInclude Include="PlayerClass.h" />
+    <ClInclude Include="UIElements-Legacy.h" />
     <ClInclude Include="UIElements.h" />
   </ItemGroup>
   <ItemGroup>

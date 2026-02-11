@@ -14,9 +14,10 @@ inline void StoUpper(std::string& inputString)
 	return;
 }
 
+//@TODO is this necessary if its so short?
 //Asks the system to execute "cls"
 inline void clearScreen() {
-	std::cout << system("cls");
+	system("cls");
 }
 
 

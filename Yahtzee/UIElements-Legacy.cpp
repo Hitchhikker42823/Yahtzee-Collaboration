@@ -1,81 +1,59 @@
-#pragma once
 #include <string>
+#include <iostream>
+#include <cstdlib>
 #include <vector>
 
+
+//@TODO do a buttload of work to make all dice print on one line
+
 //Dice
-//Dice
-inline const std::vector<std::string> UI_DIE_IMAGE_1 = {
-"===========",
-"||       ||",
-"||   O   ||",
-"||       ||",
-"==========="
-};
+extern const char UI_DIE_IMAGE_1[] = R"(
+===========
+||       ||
+||   O   ||
+||       ||
+===========)";
 
-inline const std::vector<std::string> UI_DIE_IMAGE_2 = {
-"===========",
-"|| O     ||",
-"||       ||",
-"||     O ||",
-"==========="
-};
+extern const char UI_DIE_IMAGE_2[] = R"(
+===========
+|| O     ||
+||       ||
+||     O ||
+===========)";
 
-inline const std::vector<std::string> UI_DIE_IMAGE_3 = {
-"===========",
-"|| O     ||",
-"||   O   ||",
-"||     O ||",
-"==========="
-};
+extern const char UI_DIE_IMAGE_3[] = R"(
+===========
+|| O     ||
+||   O   ||
+||     O ||
+===========)";
 
-inline const std::vector<std::string> UI_DIE_IMAGE_4 = {
-"===========",
-"|| O   O ||",
-"||       ||",
-"|| O   O ||",
-"==========="
-};
+extern const char UI_DIE_IMAGE_4[] = R"(
+===========
+|| O   O ||
+||       ||
+|| O   O ||
+===========)";
 
-inline const std::vector<std::string> UI_DIE_IMAGE_5 = {
-"===========",
-"|| O   O ||",
-"||   O   ||",
-"|| O   O ||",
-"==========="
-};
+extern const char UI_DIE_IMAGE_5[] = R"(
+===========
+|| O   O ||
+||   O   ||
+|| O   O ||
+===========)";
 
-inline const std::vector<std::string> UI_DIE_IMAGE_6 = {
-"===========",
-"|| O   O ||",
-"|| O   O ||",
-"|| O   O ||",
-"==========="
-};
+extern const char UI_DIE_IMAGE_6[] = R"(
+===========
+|| O   O ||
+|| O   O ||
+|| O   O ||
+===========)";
 
-
-inline const std::vector<std::vector<std::string>> UI_DICE_MATRIX = {
-    UI_DIE_IMAGE_1,
-    UI_DIE_IMAGE_2,
-    UI_DIE_IMAGE_3,
-    UI_DIE_IMAGE_4,
-    UI_DIE_IMAGE_5,
-    UI_DIE_IMAGE_6
-};
-
-
-
-
-//extern const char UI_TITLE_CARD[];
-//
-//
-//extern const char UI_PROMPT_TO_KEEP[];
-
-//"Yahtzee"
-inline const char* UI_TITLE_CARD = R"(
--------------------------------------------------------\
+extern const char UI_TITLE_CARD[] = R"(
+/-------------------------------------------------------\
 
  __    __        __      __                            
-\ \  /\ \      /\ \    /\ \__                         
+/\ \  /\ \      /\ \    /\ \__                         
 \ `\`\\/'/  __  \ \ \___\ \ ,_\  ____      __     __   
  `\ `\ /' /'__`\ \ \  _ `\ \ \/ /\_ ,`\  /'__`\ /'__`\ 
    `\ \ \/\ \L\.\_\ \ \ \ \ \ \_\/_/  /_/\  __//\  __/ 
@@ -85,8 +63,7 @@ inline const char* UI_TITLE_CARD = R"(
 \-------------------------------------------------------/
 )";
 
-
-inline const char* UI_PROMPT_TO_KEEP =
+extern const char UI_PROMPT_TO_KEEP[] =
 R"(
 Do you want to keep this hand and add it to the score card?
 [1] - Keep hand
@@ -94,10 +71,9 @@ Do you want to keep this hand and add it to the score card?
 )";
 
 
-//The scorecard
 
 //Note that changing this will destroy the printScoreCard() method
-inline const std::vector<std::string> UI_SCORECARD_ART = {
+std::vector<std::string> UI_SCORECARD_ART = {
 "==========================",
 "|| Ones           | "," ||   [1]",
 "|| Twos           | "," ||   [2]",
@@ -121,3 +97,26 @@ inline const std::vector<std::string> UI_SCORECARD_ART = {
 "|| GRAND TOTAL    | "," ||",
 "=========================="
 };
+
+
+
+////Legacy code not used anymore
+//extern const char scoreCardSelectionUI[] =
+//R"(
+//Where do you want to put this hand?
+//[1] - 1s
+//[2] - 2s
+//[3] - 3s
+//[4] - 4s
+//[5] - 5s
+//[6] - 6s
+//
+//[Q] - 3 of a Kind
+//[W] - 4 of a Kind
+//[E] - Full House
+//[R] - Small Straight
+//[T] - Large Straight
+//[Y] - Yahtzee
+//[U] - Chance
+//
+//)";

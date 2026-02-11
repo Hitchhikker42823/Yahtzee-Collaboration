@@ -3,12 +3,19 @@ using namespace std;
 #include "UIElements.h"
 #include "FunctionDeclarations.h"
 #include "PlayerClass.h"
-
-
+//@TODO Back Button from Score Card Entry
+//@TODO Fix total math
+//@TODO fix stringstream on score placement selection
+//@TODO fix softlock if scorecard fills in < 13 rounds
+//@TODO comment way more
+//@TODO fix text stating "press any key" when actually you need enter
+//@TODO all caps name the constants
+//@TODO enum the scorecard locations
+//@TODO have scorecard search for a string to make it more resilient
 
 int main()
 {
-	cout << UITitleCard << "\n";
+	cout << UI_TITLE_CARD << "\n";
 	cout << "Press any key to contiue...";
 	string dummyString = ""; //to wait for input
 	getline(cin, dummyString);
@@ -45,7 +52,7 @@ int main()
 			cout << "Rolls Left: " << rerollsRemaining +1 << "\n"; //1 index vs 0 index
 			
 			//logic to break the while loop if the user wants to keep their hand
-			cout << promptToKeep;
+			cout << UI_PROMPT_TO_KEEP;
 			string userInput = "";
 			while (userInput != "1" && userInput != "2")
 			{
@@ -73,11 +80,15 @@ int main()
 		}
 
 		//if we reach the end of 3 rolls, force to place in scorecard
-		clearScreen();
-		player0.printCurrentHand();
-		cout << "You have run out of rerolls. Please choose something to place this hand in.\n";
-		player0.printScoreCard();
-		player0.placeHandInScorecard();
+		if (rerollsRemaining == 0)
+		{
+			clearScreen();
+			player0.printCurrentHand();
+			player0.printScoreCard();
+			cout << "You have run out of rerolls. Please choose something to place this hand in.\n";
+			player0.placeHandInScorecard();
+		}
+
 
 
 	}

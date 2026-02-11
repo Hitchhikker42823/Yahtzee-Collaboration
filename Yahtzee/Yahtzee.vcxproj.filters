@@ -24,16 +24,22 @@
     <ClCompile Include="UIElements.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="UIElements-Legacy.cpp">
+      <Filter>Resource Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="FunctionDeclarations.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="PlayerClass.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="UIElements.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="PlayerClass.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="UIElements-Legacy.h">
+      <Filter>Resource Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

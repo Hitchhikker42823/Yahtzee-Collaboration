@@ -16,8 +16,7 @@ using namespace std;
 #include "FunctionDeclarations.h"
 #include "PlayerClass.h"
 
-
-
+//@TODO: keeping last hand causes double score entry
 //@TODO: What the hell is a bonus yahtzee
 //@TODO: reduce magic numbers by defining a bunch of constants
 
@@ -34,37 +33,77 @@ Player::Player(int playerID, int maxHandSize)
 
 //--------------------------------------------------------------------------------------//
 
+////takes the current hand and iterates
+//void Player::printCurrentHand()
+//{
+//	for (int i = 0; i < currentHand.size(); i++)
+//	{
+//		switch (currentHand[i])
+//		{
+//		case 1:
+//			cout << UI_DICE_MATRIX[j][i];
+//			break;
+//		case 2:
+//			cout << UI_DICE_MATRIX[j][i];
+//			break;
+//		case 3:
+//			cout << UI_DICE_MATRIX[j][i];
+//			break;
+//		case 4:
+//			cout << UI_DICE_MATRIX[j][i];
+//			break;
+//		case 5:
+//			cout << UI_DICE_MATRIX[j][i];
+//			break;
+//		case 6:
+//			cout << UI_DICE_MATRIX[j][i];
+//			break;
+//		default:
+//			cout << "\nInvalid die value in this hand location\n";
+//		}
+//	}
+//
+//	cout << "\n"; //for nice formatting
+//
+//	return;
+//}
+
+
 //takes the current hand and iterates
 void Player::printCurrentHand()
 {
-	for (int i = 0; i < currentHand.size(); i++)
+	for (int j = 0; j < 5; j++) //the dice images are 5 lines tall
 	{
-		switch (currentHand[i])
+		for (int i = 0; i < currentHand.size(); i++)
 		{
-		case 1:
-			cout << UIDieImage1;
-			break;
-		case 2:
-			cout << UIDieImage2;
-			break;
-		case 3:
-			cout << UIDieImage3;
-			break;
-		case 4:
-			cout << UIDieImage4;
-			break;
-		case 5:
-			cout << UIDieImage5;
-			break;
-		case 6:
-			cout << UIDieImage6;
-			break;
-		default:
-			cout << "\nInvalid die value in this hand location\n";
-		}
-	}
+			switch (currentHand[i])
+			{
+			case 1:
+				cout << UI_DICE_MATRIX[i][j];
+				break;
+			case 2:
+				cout << UI_DICE_MATRIX[i][j];
+				break;
+			case 3:
+				cout << UI_DICE_MATRIX[i][j];
+				break;
+			case 4:
+				cout << UI_DICE_MATRIX[i][j];
+				break;
+			case 5:
+				cout << UI_DICE_MATRIX[i][j];
+				break;
+			case 6:
+				cout << UI_DICE_MATRIX[i][j];
+				break;
+			default:
+				cout << "\nInvalid die value in this hand location\n";
+			}
 
-	cout << "\n"; //for nice formatting
+			cout << "  "; //space in between the dice
+		}
+		cout << "\n"; //go to next line of the graphic
+	}
 
 	return;
 }
@@ -77,15 +116,36 @@ void Player::printScoreCard()
 	int upperSum = 0;
 	int lowerSum = 0;
 	int totalSum = 0;
-
-	for (int i = 0; i < 6; i++) //upper sum
+	
+	//for ease of printing and math, replace null "-1"s with 0s
+	vector<string>scoreCardCopy(scoreCard.size());
+	for (int j = 0; j < scoreCard.size(); j++)
 	{
-		upperSum += scoreCard[i];
+		if (scoreCard[j] == -1) 
+		{ 
+			scoreCardCopy[j] = "-";
+		}
+		else
+		{
+			scoreCardCopy[j] = to_string(scoreCard[j]);
+		}
 	}
 
-	for (int i = 0; i < 14; i++) //lower sum
+	for (int j = 0; j < 6; j++) //upper sum
 	{
-		lowerSum += scoreCard[i];
+
+		if (scoreCard[j] != -1)
+		{
+			upperSum += scoreCard[j];
+		}
+	}
+
+	for (int j = 6; j < 14; j++) //lower sum
+	{
+		if (scoreCard[j] != -1) 
+		{
+			lowerSum += scoreCard[j];
+		}
 	}
 
 	//get total sum with bonus
@@ -93,51 +153,52 @@ void Player::printScoreCard()
 	if (upperSum >= 63) { totalSum += 35; } //the upper bonus
 
 
-	for (int i = 0; i < UIScoreCardArt.size(); i++)
+	int j = 0; //for stepping through <int>scoreCard
+	for (int i = 0; i < UI_SCORECARD_ART.size(); i++)
 	{
-		int j = 0; //for stepping through <int>scoreCard
 
-		if (UIScoreCardArt[i].size() == 27) //non score rows are 27 char long
+		if (UI_SCORECARD_ART[i].size() == 26) //non score rows are 26 char long
 		{
-			cout << UIScoreCardArt[i];
+			cout << UI_SCORECARD_ART[i];
 		}
 		else //score row
 		{
-			if (i == 13) //upper section bonus in UIScoreCardArt
+			if (i == 13) //upper section bonus in UI_SCORECARD_ART
 			{
-				cout << UIScoreCardArt[i];
-				cout << setw(3) << (upperSum >= 63) ? "35" : "0"; //35 if we got the bonus, 0 otherwise
-				cout << UIScoreCardArt[++i]; //increment and print next
+				cout << UI_SCORECARD_ART[i];
+				cout << setw(3) << ((upperSum >= 63) ? "35" : "0"); //35 if we got the bonus, 0 otherwise
+				cout << UI_SCORECARD_ART[++i]; //increment and print next
 			}
-			else if (i == 33) //upper total in UIScoreCardArt
+			else if (i == 33) //upper total in UI_SCORECARD_ART
 			{
-				cout << UIScoreCardArt[i];
+				cout << UI_SCORECARD_ART[i];
 				cout << setw(3) << upperSum;
-				cout << UIScoreCardArt[++i];
+				cout << UI_SCORECARD_ART[++i];
 			}
-			else if (i == 35) //lower total in UIScoreCardArt
+			else if (i == 35) //lower total in UI_SCORECARD_ART
 			{
-				cout << UIScoreCardArt[i];
+				cout << UI_SCORECARD_ART[i];
 				cout << setw(3) << lowerSum;
-				cout << UIScoreCardArt[++i];
+				cout << UI_SCORECARD_ART[++i];
 			}
-			else if (i == 37) //full total in UIScoreCardArt
+			else if (i == 37) //full total in UI_SCORECARD_ART
 			{
-				cout << UIScoreCardArt[i];
+				cout << UI_SCORECARD_ART[i];
 				cout << setw(3) << totalSum;
-				cout << UIScoreCardArt[++i];
+				cout << UI_SCORECARD_ART[++i];
 			}
 			else //all other normal score
 			{
-				cout << UIScoreCardArt[i];
-				cout << setw(3) << scoreCard[j];
+
+				cout << UI_SCORECARD_ART[i];
+				cout << setw(3) << scoreCardCopy[j];
 				j++; //iterate through <int>scoreCard
-				cout << UIScoreCardArt[++i]; //increment and print next
+				cout << UI_SCORECARD_ART[++i]; //increment and print next
 			}
 
 		}
 
-		cout << "\n";
+		cout << "\n"; //@DEBUG
 	}
 }
 
@@ -211,14 +272,18 @@ void Player::removeAndRefill()
 //takes user input for where to place the current hand in the scorecard and then does that
 void Player::placeHandInScorecard()
 {
-	cout << scoreCardSelectionUI;
-	char cardPlaceSelected = '\0'; //placeholder null character
-	cin >> cardPlaceSelected; //use cin because we only want one character
-	cardPlaceSelected = toupper(cardPlaceSelected); //caps insensitve
+	//@TODO: Delete once this logic works
+	//clearScreen();
+	printCurrentHand();
+	printScoreCard();
 
 	int ScorePlacedExitCode = 1;
 	while (ScorePlacedExitCode != 0)
 	{
+		char cardPlaceSelected = '\0'; //placeholder null character
+		cin >> cardPlaceSelected; //use cin because we only want one character
+		cardPlaceSelected = toupper(cardPlaceSelected); //caps insensitve
+
 		int inputAsInt = cardPlaceSelected - '0'; //ASCII math
 		switch (cardPlaceSelected) {
 		case '1': case '2': case '3':
@@ -244,7 +309,7 @@ void Player::placeHandInScorecard()
 			ScorePlacedExitCode = setYahtzee();
 			break;
 		case 'U':
-			ScorePlacedExitCode = setChance();
+		ScorePlacedExitCode = setChance();
 			break;
 		default:
 			//this shouldn't be reached unless input validation fails
@@ -327,7 +392,7 @@ int  Player::setUpperSection(int sectionToSet)
 	//if the user tries to 0 something, check
 	if (runningTotal == 0)
 	{
-		cout << "Are you sure you want to zero this ? (Y / N)\n";
+		cout << "Are you sure you want to zero the " << sectionToSet << "s? (Y / N)\n";
 
 		while (true) //broken by if/else
 		{
@@ -552,6 +617,11 @@ int Player::setSmallStraight()
 		if (currentHand[i] == currentHand[i + 1] - 1)
 		{
 			count++;
+		}
+		else if (currentHand[i] == currentHand[i + 1])
+		{
+			//do nothing if we get duplicates in the middle of teh straight
+			//@TODO redo this?
 		}
 		else
 		{
