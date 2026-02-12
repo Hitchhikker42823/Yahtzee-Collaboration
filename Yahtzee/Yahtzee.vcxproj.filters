@@ -21,10 +21,10 @@
     <ClCompile Include="PlayerClass.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="UIElements.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="UIElements-Legacy.cpp">
+      <Filter>Resource Files</Filter>
+    </ClCompile>
+    <ClCompile Include="UIElements.cpp">
       <Filter>Resource Files</Filter>
     </ClCompile>
   </ItemGroup>

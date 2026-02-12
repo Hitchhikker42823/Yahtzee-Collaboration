@@ -16,85 +16,54 @@ using namespace std;
 #include "FunctionDeclarations.h"
 #include "PlayerClass.h"
 
-//@TODO: keeping last hand causes double score entry
-//@TODO: What the hell is a bonus yahtzee
-//@TODO: reduce magic numbers by defining a bunch of constants
+
 
 
 //--------------------------------------------------------------------------------------//
 //									Public Methods										//
 //--------------------------------------------------------------------------------------//
 
-Player::Player(int playerID, int maxHandSize)
-	: playerID(playerID), maxHandSize(maxHandSize) //initializes constants
+Player::Player(int playerID, int MAX_HAND_SIZE)
+	: playerID(playerID), MAX_HAND_SIZE(MAX_HAND_SIZE) //initializes constants
+	//theoretically we can have hand size other than 5, but then scoring becomes hard
 {
 	//blank constructor body for now
 }
 
 //--------------------------------------------------------------------------------------//
 
-////takes the current hand and iterates
-//void Player::printCurrentHand()
-//{
-//	for (int i = 0; i < currentHand.size(); i++)
-//	{
-//		switch (currentHand[i])
-//		{
-//		case 1:
-//			cout << UI_DICE_MATRIX[j][i];
-//			break;
-//		case 2:
-//			cout << UI_DICE_MATRIX[j][i];
-//			break;
-//		case 3:
-//			cout << UI_DICE_MATRIX[j][i];
-//			break;
-//		case 4:
-//			cout << UI_DICE_MATRIX[j][i];
-//			break;
-//		case 5:
-//			cout << UI_DICE_MATRIX[j][i];
-//			break;
-//		case 6:
-//			cout << UI_DICE_MATRIX[j][i];
-//			break;
-//		default:
-//			cout << "\nInvalid die value in this hand location\n";
-//		}
-//	}
-//
-//	cout << "\n"; //for nice formatting
-//
-//	return;
-//}
-
-
 //takes the current hand and iterates
 void Player::printCurrentHand()
 {
-	for (int j = 0; j < 5; j++) //the dice images are 5 lines tall
+	//print lines sequentially from UI_DICE_MATRIX
+	//dice are 5 lines tall
+	for (int j = 0; j < 5; j++) 
 	{
+		//in a given line, print one line for each value in the hand
+		//if repeated for all lines, prints the dice next to eachother
 		for (int i = 0; i < currentHand.size(); i++)
 		{
 			switch (currentHand[i])
 			{
 			case 1:
-				cout << UI_DICE_MATRIX[i][j];
+				//in j'th row of matrix, pull graphic for one line of a die
+				//the die we need is at currentHand[i] -1 (0 index vector vs 1-6 dice)
+				cout << UI_DICE_MATRIX[currentHand[i] -1][j];
 				break;
 			case 2:
-				cout << UI_DICE_MATRIX[i][j];
+				cout << UI_DICE_MATRIX[currentHand[i] -1][j];
 				break;
 			case 3:
-				cout << UI_DICE_MATRIX[i][j];
+				cout << UI_DICE_MATRIX[currentHand[i] - 1][j];
 				break;
 			case 4:
-				cout << UI_DICE_MATRIX[i][j];
+				cout << UI_DICE_MATRIX[currentHand[i] - 1][j];
 				break;
 			case 5:
-				cout << UI_DICE_MATRIX[i][j];
+				cout << UI_DICE_MATRIX[currentHand[i] - 1][j];
 				break;
 			case 6:
-				cout << UI_DICE_MATRIX[i][j];
+				cout << UI_DICE_MATRIX[currentHand[i] - 1][j];
 				break;
 			default:
 				cout << "\nInvalid die value in this hand location\n";
@@ -117,34 +86,34 @@ void Player::printScoreCard()
 	int lowerSum = 0;
 	int totalSum = 0;
 	
-	//for ease of printing and math, replace null "-1"s with 0s
-	vector<string>scoreCardCopy(scoreCard.size());
-	for (int j = 0; j < scoreCard.size(); j++)
+	//create a copy of the scoreDataVector with nulls replaced with "-"
+	vector<string>scoreCardCopy(scoreDataVector.size());
+	for (int j = 0; j < scoreDataVector.size(); j++)
 	{
-		if (scoreCard[j] == -1) 
+		if (scoreDataVector[j] == Null)
 		{ 
 			scoreCardCopy[j] = "-";
 		}
 		else
 		{
-			scoreCardCopy[j] = to_string(scoreCard[j]);
+			scoreCardCopy[j] = to_string(scoreDataVector[j]);
 		}
 	}
 
 	for (int j = 0; j < 6; j++) //upper sum
 	{
 
-		if (scoreCard[j] != -1)
+		if (scoreDataVector[j] != Null)
 		{
-			upperSum += scoreCard[j];
+			upperSum += scoreDataVector[j];
 		}
 	}
 
 	for (int j = 6; j < 14; j++) //lower sum
 	{
-		if (scoreCard[j] != -1) 
+		if (scoreDataVector[j] != Null)
 		{
-			lowerSum += scoreCard[j];
+			lowerSum += scoreDataVector[j];
 		}
 	}
 
@@ -153,7 +122,7 @@ void Player::printScoreCard()
 	if (upperSum >= 63) { totalSum += 35; } //the upper bonus
 
 
-	int j = 0; //for stepping through <int>scoreCard
+	int j = 0; //for stepping through <int>scoreDataVector
 	for (int i = 0; i < UI_SCORECARD_ART.size(); i++)
 	{
 
@@ -192,7 +161,7 @@ void Player::printScoreCard()
 
 				cout << UI_SCORECARD_ART[i];
 				cout << setw(3) << scoreCardCopy[j];
-				j++; //iterate through <int>scoreCard
+				j++; //iterate through <int>scoreDataVector
 				cout << UI_SCORECARD_ART[++i]; //increment and print next
 			}
 
@@ -210,7 +179,7 @@ void Player::FullNewHand()
 	currentHand = {};
 
 	//roll until hand is full
-	for (int i = 0; i < maxHandSize; i++)
+	for (int i = 0; i < MAX_HAND_SIZE; i++)
 	{
 
 		currentHand.push_back(rollOne());
@@ -246,7 +215,7 @@ vector<int> Player::askForNumbersToRemove()
 //Just rolls and adds numbers until the hand has 5 dice in it
 void Player::fillHand()
 {
-	while (currentHand.size() < maxHandSize)
+	while (currentHand.size() < MAX_HAND_SIZE)
 	{
 		currentHand.push_back(rollOne());
 	}
@@ -269,7 +238,7 @@ void Player::removeAndRefill()
 
 //--------------------------------------------------------------------------------------//
 
-//takes user input for where to place the current hand in the scorecard and then does that
+//takes user input for where to place the current hand in the scoreDataVector and then does that
 void Player::placeHandInScorecard()
 {
 	//@TODO: Delete once this logic works
@@ -372,9 +341,18 @@ void Player::removeFromHand(vector<int> numbersToRemove)
 
 int  Player::setUpperSection(int sectionToSet)
 {
+	//only allow to add things if the scoreDataVector slot is empty
+	if (scoreDataVector[sectionToSet - 1] != Null)
+	{
+		//there was already something there
+		cout << "There is already something in this score space\n";
+		return 2;
+	}
+
+	//if score slot is empty, do the math
 	//tally all #s of the section selected
 	int runningTotal = 0;
-	for (int i = 0; i < maxHandSize; i++)
+	for (int i = 0; i < MAX_HAND_SIZE; i++)
 	{
 		if (currentHand[i] == sectionToSet)
 		{
@@ -382,13 +360,6 @@ int  Player::setUpperSection(int sectionToSet)
 		}
 	}
 
-	//only allow to add things if the scorecard slot is empty
-	if (scoreCard[sectionToSet - 1] != -1)
-	{
-		//there was already something there
-		cout << "There is already something in this score space\n";
-		return 2;
-	}
 	//if the user tries to 0 something, check
 	if (runningTotal == 0)
 	{
@@ -401,7 +372,7 @@ int  Player::setUpperSection(int sectionToSet)
 			StoUpper(userInput);
 			if (userInput == "Y") //if user confirms and we haven't already put something here
 			{
-				scoreCard[sectionToSet - 1] = 0;
+				scoreDataVector[sectionToSet - 1] = 0;
 				return 0;
 			}
 			else if (userInput == "N")
@@ -410,10 +381,11 @@ int  Player::setUpperSection(int sectionToSet)
 			}
 		}
 	}
+	
 	//total != 0
 	else
 	{
-		scoreCard[sectionToSet - 1] = runningTotal;
+		scoreDataVector[sectionToSet - 1] = runningTotal;
 		return 0;
 	}
 		
@@ -428,14 +400,21 @@ int Player::set3oaK()
 	int count = 0;
 	int runningTotal = 0;
 
-	//loop through and count how many 1s,2s,3s,4s,5s,6s.
-	//sum all no matter if it's 3oaK or not
+	//only allow to add things if the scoreDataVector slot is empty
+	if (scoreDataVector[ThreeOaK] != Null)
+	{
+		cout << "There is already something in this score space\n";
+		return 2;
+	}
+
+	//if score slot is empty, do the math
+	//for each value a die could take
 	for (int j = 0; j < 6; j++)
 	{
-		//if last number wasn't 3oaK, re-count. Otherwise, remember the fact it's 3oaK
+		//if we didn't count to 3oaK for the last value, reset the coutner
 		if (count < 3) { count = 0; }
 
-		for (int i = 0; i < maxHandSize; i++)
+		for (int i = 0; i < MAX_HAND_SIZE; i++)
 		{
 			runningTotal += currentHand[i];
 			if (currentHand[i] == j)
@@ -445,13 +424,6 @@ int Player::set3oaK()
 			//@DEBUG this logic might not be sound?
 
 		}
-	}
-		
-	//if scorecard slot empty
-	if (scoreCard[6] != -1)
-	{
-		cout << "There is already something in this score space\n";
-		return 2;
 	}
 
 	//user must confrim they want to zero a space
@@ -466,7 +438,7 @@ int Player::set3oaK()
 			StoUpper(userInput);
 			if (userInput == "Y")
 			{
-				scoreCard[6] = 0;
+				scoreDataVector[ThreeOaK] = 0;
 				return 0;
 			}
 			else if (userInput == "N")
@@ -478,7 +450,7 @@ int Player::set3oaK()
 	//valid 3oaK
 	else
 	{
-		scoreCard[6] = runningTotal;
+		scoreDataVector[ThreeOaK] = runningTotal;
 		return 0;
 	}
 
@@ -494,14 +466,21 @@ int Player::set4oaK()
 	int count = 0;
 	int runningTotal = 0;
 
-	//loop through and count how many 1s,2s,3s,4s,5s,6s.
-	//sum all no matter if it's 4oaK or not
+	//only allow to add things if the scoreDataVector slot is empty
+	if (scoreDataVector[FourOaK] != Null)
+	{
+		cout << "There is already something in this score space\n";
+		return 2;
+	}
+
+	//if score slot is empty, do the math
+	//for each value a die could take
 	for (int j = 0; j < 6; j++)
 	{
-		//if last number wasn't 3oaK, re-count. Otherwise, remember the fact it's 4oaK
+		//if we didn't count to 4oaK for the last value, reset the coutner
 		if (count < 4) { count = 0; }
 
-		for (int i = 0; i < maxHandSize; i++)
+		for (int i = 0; i < MAX_HAND_SIZE; i++)
 		{
 			runningTotal += currentHand[i];
 			if (currentHand[i] == j)
@@ -512,14 +491,8 @@ int Player::set4oaK()
 
 		}
 	}
-
-	if (scoreCard[7] != -1)
-	{
-		cout << "There is already something in this score space\n";
-		return 2;
-	}
 		
-	//if we didn't count 4 dice of the same kind, prompt to 0
+	//if we didn't count 4 dice of the same kind, it's not valid
 	if (count < 4)
 	{
 		cout << "This is not a 4 of a kind. Are you sure you want to zero this? (Y/N)\n";
@@ -529,9 +502,9 @@ int Player::set4oaK()
 			string userInput = "";
 			getline(cin, userInput);
 			StoUpper(userInput);
-			if (userInput == "Y" && scoreCard[7] == -1)
+			if (userInput == "Y")
 			{
-				scoreCard[7] = 0;
+				scoreDataVector[FourOaK] = 0;
 				return 0;
 			}
 			else if (userInput == "N")
@@ -543,7 +516,7 @@ int Player::set4oaK()
 	//valid 4oaK
 	else
 	{
-		scoreCard[7] = runningTotal;
+		scoreDataVector[FourOaK] = runningTotal;
 		return 0;
 	}
 
@@ -556,16 +529,19 @@ int Player::setFullHouse()
 {
 	int count = 0;
 
-	if (scoreCard[8] != -1)
+	//only allow to add things if the scoreDataVector slot is empty
+	if (scoreDataVector[FullHouse] != Null)
 	{
 		cout << "There is already something in this score space\n";
 		return 2;
 	}
 
+	//if score slot is empty, do the math
+	//for each value a die could take
 	for (int j = 0; j < 6; j++)
 	{
-
-		for (int i = 0; i < maxHandSize; i++)
+		//count how many times a given value appears
+		for (int i = 0; i < MAX_HAND_SIZE; i++)
 		{
 			if (currentHand[i] == j)
 			{
@@ -574,6 +550,7 @@ int Player::setFullHouse()
 		}
 
 		// if there's 1,4, or 5 of any given number it cannot be a full house
+		//Note that this will break if we ever change the hand size
 		if (count == 1 || count == 4 || count == 5)
 		{
 			cout << "This is not a full house. Are you sure you want to zero this? (Y/N)\n";
@@ -583,9 +560,9 @@ int Player::setFullHouse()
 				string userInput = "";
 				getline(cin, userInput);
 				StoUpper(userInput);
-				if (userInput == "Y" && scoreCard[8] == -1)
+				if (userInput == "Y")
 				{
-					scoreCard[8] = 0;
+					scoreDataVector[FullHouse] = 0;
 					return 0;
 				}
 				else if (userInput == "N")
@@ -598,7 +575,7 @@ int Player::setFullHouse()
 	}
 
 	//if above didn't fail it must be a full house
-	scoreCard[8] = 25;
+	scoreDataVector[8] = 25; //Full House is worth 25 points
 	return 0;
 		
 }
@@ -607,12 +584,20 @@ int Player::setFullHouse()
 
 int Player::setSmallStraight()
 {
+	//only allow to add things if the scoreDataVector slot is empty
+	if (scoreDataVector[SmStraight] != Null)
+	{
+		cout << "There is already something in this score space\n";
+		return 2;
+	}
+
+	//if score slot is empty, do the math
 	//sort from <algorithm> does smallest to largest
 	sort(currentHand.begin(), currentHand.end());
 
 	int count = 0;
 
-	for (int i = 0; i < maxHandSize-1; i++)
+	for (int i = 0; i < MAX_HAND_SIZE-1; i++)
 	{
 		if (currentHand[i] == currentHand[i + 1] - 1)
 		{
@@ -620,20 +605,13 @@ int Player::setSmallStraight()
 		}
 		else if (currentHand[i] == currentHand[i + 1])
 		{
-			//do nothing if we get duplicates in the middle of teh straight
+			//do nothing if we get duplicates in the middle of the straight
 			//@TODO redo this?
 		}
 		else
 		{
 			count = 0;
 		} //@DEBUG this logic might not be sound
-	}
-
-	//only if scorecard slot is empty
-	if (scoreCard[9] != -1)
-	{
-		cout << "There is already something in this score space\n";
-		return 2;
 	}
 
 	//confrim a zero
@@ -646,9 +624,9 @@ int Player::setSmallStraight()
 			string userInput = "";
 			std::getline(cin, userInput);
 			StoUpper(userInput);
-			if (userInput == "Y" && scoreCard[9] == -1)
+			if (userInput == "Y")
 			{
-				scoreCard[9] = 0;
+				scoreDataVector[SmStraight] = 0;
 				return 0;
 			}
 			else if (userInput == "N")
@@ -660,7 +638,7 @@ int Player::setSmallStraight()
 	//valid small straight
 	else
 	{
-		scoreCard[9] = 30;
+		scoreDataVector[SmStraight] = 30; //A small straight is worth 30 points
 		return 0;
 	}
 
@@ -671,18 +649,20 @@ int Player::setSmallStraight()
 
 int Player::setLargeStraight()
 {
-	//sort from <algorithm> does smallest to largest
-	std::sort(currentHand.begin(), currentHand.end());
-
 	int count = 0;
 
-	if (scoreCard[10] != -1)
+	//only allow to add things if the scoreDataVector slot is empty
+	if (scoreDataVector[LgStraight] != Null)
 	{
 		cout << "There is already something in this score space\n";
 		return 2;
 	}
 
-	for (int i = 0; i < maxHandSize - 1; i++)
+	//if score slot is empty, do the math
+	//sort from <algorithm> does smallest to largest
+	std::sort(currentHand.begin(), currentHand.end());
+
+	for (int i = 0; i < MAX_HAND_SIZE - 1; i++)
 	{
 		if (currentHand[i] != currentHand[i + 1] - 1)
 		{
@@ -693,9 +673,9 @@ int Player::setLargeStraight()
 				string userInput = "";
 				std::getline(cin, userInput);
 				StoUpper(userInput);
-				if (userInput == "Y" && scoreCard[10] == -1)
+				if (userInput == "Y")
 				{
-					scoreCard[10] = 0;
+					scoreDataVector[LgStraight] = 0;
 					return 0;
 				}
 				else if (userInput == "N")
@@ -707,7 +687,7 @@ int Player::setLargeStraight()
 	}
 		
 	//if above didn't fail it's a valid large straight
-	scoreCard[10] = 40;
+	scoreDataVector[10] = 40; //Large Straight is worth 40 points
 	return 0;
 
 	return -1; //unreachable fallthrough return
@@ -720,13 +700,16 @@ int Player::setYahtzee()
 	int numberOnTheDie = 0;
 	numberOnTheDie = currentHand[0];
 
-	if (scoreCard[11] == -1)
+	//only allow to add things if the scoreDataVector slot is empty
+	if (scoreDataVector[YahtzeeIndex] == Null)
 	{
 			cout << "There is already something in this score space\n";
 			return 2;
 	}
-		
-	for (int i = 0; i < maxHandSize; i++)
+	
+	//@TODO investigate this logic
+	//if score slot is empty, do the math
+	for (int i = 0; i < MAX_HAND_SIZE; i++)
 	{
 		if (currentHand[i] != numberOnTheDie)
 		{
@@ -737,9 +720,9 @@ int Player::setYahtzee()
 				string userInput = "";
 				std::getline(cin, userInput);
 				StoUpper(userInput);
-				if (userInput == "Y" && scoreCard[11] == -1)
+				if (userInput == "Y")
 				{
-					scoreCard[11] = 0;
+					scoreDataVector[YahtzeeIndex] = 0;
 					return 0;
 				}
 				else if (userInput == "N")
@@ -748,9 +731,9 @@ int Player::setYahtzee()
 				}
 			}
 		}
-		else if (scoreCard[11] == -1)
+		else if (scoreDataVector[YahtzeeIndex] == Null)
 		{
-			scoreCard[11] = 50;
+			scoreDataVector[YahtzeeIndex] = 50; //Yahtzee is worth 50 points
 			return 0;
 		}
 		//@TODO: Add bonus yahtzee here
@@ -763,20 +746,21 @@ int Player::setYahtzee()
 
 int Player::setChance()
 {
+	//do math first since this one is really small
 	int runningTotal = 0;
-	for (int i = 0; i < maxHandSize; i++)
+	for (int i = 0; i < MAX_HAND_SIZE; i++)
 	{
 			runningTotal += currentHand[i];
 	}
 
-	if (scoreCard[12] != -1)
+	if (scoreDataVector[Chance] != Null)
 	{
 		cout << "There is already something in this score space\n";
 		return 2;
 	}
 	else
 	{
-		scoreCard[12] = runningTotal;
+		scoreDataVector[Chance] = runningTotal;
 		return 0;
 	}
 

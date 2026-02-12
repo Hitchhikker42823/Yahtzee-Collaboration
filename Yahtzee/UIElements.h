@@ -94,7 +94,7 @@ Do you want to keep this hand and add it to the score card?
 )";
 
 
-//The scorecard
+//The scoreDataVector
 
 //Note that changing this will destroy the printScoreCard() method
 inline const std::vector<std::string> UI_SCORECARD_ART = {

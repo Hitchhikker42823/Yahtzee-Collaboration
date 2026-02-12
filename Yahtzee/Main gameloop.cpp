@@ -4,25 +4,25 @@ using namespace std;
 #include "FunctionDeclarations.h"
 #include "PlayerClass.h"
 //@TODO Back Button from Score Card Entry
-//@TODO Fix total math
 //@TODO fix stringstream on score placement selection
-//@TODO fix softlock if scorecard fills in < 13 rounds
+//@TODO fix softlock if scoreDataVector fills in < 13 rounds
 //@TODO comment way more
-//@TODO fix text stating "press any key" when actually you need enter
-//@TODO all caps name the constants
-//@TODO enum the scorecard locations
-//@TODO have scorecard search for a string to make it more resilient
+//@TODO enum the scoreDataVector locations
+//@TODO have scoreDataVector search for a string to make it more resilient
+//@TODO: keeping last hand causes double score entry
+//@TODO: What the hell is a bonus yahtzee
+//@TODO: reduce magic numbers by defining a bunch of constants
 
 int main()
 {
 	cout << UI_TITLE_CARD << "\n";
-	cout << "Press any key to contiue...";
+	cout << "Press enter to contiue...";
 	string dummyString = ""; //to wait for input
 	getline(cin, dummyString);
 
 
 	Player player0;
-	int roundsRemaining = 13; //start a new game
+	int roundsRemaining = 13; //start a new game, 13 rounds in a game
 
 	while (roundsRemaining > 0)
 	{
@@ -37,7 +37,7 @@ int main()
 		cout << "Rounds remaining: " << roundsRemaining +1 << "\n"; //1 index vs 0 index
 
 		//it feels a lot better if you press a key for the first hand
-		cout << "Press any key to roll the first set of dice\n";
+		cout << "Press enter to roll the first set of dice\n";
 		string dummyString = ""; //to wait for input
 		getline(cin, dummyString);
 
@@ -79,7 +79,7 @@ int main()
 
 		}
 
-		//if we reach the end of 3 rolls, force to place in scorecard
+		//if we reach the end of 3 rolls, force to place in scoreDataVector
 		if (rerollsRemaining == 0)
 		{
 			clearScreen();

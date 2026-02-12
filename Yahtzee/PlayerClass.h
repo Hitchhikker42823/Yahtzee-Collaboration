@@ -9,7 +9,7 @@ class Player {
 
 public:
 	//Constructor
-	Player(int playerID = 0, int maxHandSize = 5);
+	Player(int playerID = 0, int MAX_HAND_SIZE = 5);
 
 	//takes the current hand and iterates through it to print it
 	void printCurrentHand();
@@ -29,9 +29,9 @@ public:
 	//prompts player to remove a value from their hand and then refills it
 	void removeAndRefill();
 
-	//prompts player to put their hand in the scorecard,
+	//prompts player to put their hand in the scoreDataVector,
 	// validates the potential score, and then enters the
-	// value of the hand into  std::vector<int> scoreCard
+	// value of the hand into  std::vector<int> scoreDataVector
 	void placeHandInScorecard();
 
 
@@ -39,13 +39,22 @@ public:
 private:
 	//Constants initialized with the class
 	const int playerID;
-	const int maxHandSize;
+	const int MAX_HAND_SIZE;
 
+
+	//just to make it clearer that -1 is null
+	const enum Null { Null = -1 };
 
 	//Variables
 	std::vector<int> currentHand = {};
-	std::vector<int> scoreCard = { -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1 };
+	std::vector<int> scoreDataVector = { Null, Null, Null, Null, Null, Null, Null, Null, Null, Null, Null, Null, Null, Null };
 	//{1s, 2s, 3s, 4s, 5s, 6s, 3oaK, 4oaK, FllHs, SmSt, LgSt, YAHT, Chnc, BnsYah}
+	
+	//An enum to give a name to the indicies within the scoreDataVector. Mostly for the score setting functions.
+	const enum ScoreCardIndices
+	{
+		Ones, Twos, Threes, Fours, Fives, Sixes, ThreeOaK, FourOaK, FullHouse, SmStraight, LgStraight, YahtzeeIndex, Chance, BnsYahtzee
+	};
 
 
 	//Functions
@@ -55,7 +64,7 @@ private:
 	//removes the given nubmbers from the hand
 	void removeFromHand(std::vector<int> numbersToRemove);
 
-	//The functions to validate the current hand's value and put it in the scorecard
+	//The functions to validate the current hand's value and put it in the scoreDataVector
 	int  setUpperSection(int sectionToSet);
 
 	int set3oaK();

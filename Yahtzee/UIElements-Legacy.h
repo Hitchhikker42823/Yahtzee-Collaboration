@@ -22,9 +22,9 @@ extern const char UI_TITLE_CARD[];
 //Asking whether to keep or discard the hand
 extern const char UI_PROMPT_TO_KEEP[];
 
-//The scorecard
+//The scoreDataVector
 extern std::vector<std::string> UI_SCORECARD_ART;
 
 
-//Legacy UI to ask which slot of the scorecard we place the hand into
+//Legacy UI to ask which slot of the scoreDataVector we place the hand into
 //extern const char scoreCardSelectionUI[];
