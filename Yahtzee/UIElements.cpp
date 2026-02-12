@@ -4,7 +4,6 @@
 #include <vector>
 
 
-//@TODO do a buttload of work to make all dice print on one line
 
 
 //const char UI_TITLE_CARD[] = R"(

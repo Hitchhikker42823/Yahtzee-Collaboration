@@ -1,10 +1,6 @@
 #pragma once
 
 
-
-//@TODO: What the hell is a bonus yahtzee
-//@TODO: reduce magic numbers by defining a bunch of constants
-
 class Player {
 
 public:
@@ -32,7 +28,7 @@ public:
 	//prompts player to put their hand in the scoreDataVector,
 	// validates the potential score, and then enters the
 	// value of the hand into  std::vector<int> scoreDataVector
-	void placeHandInScorecard();
+	void placeHandInScorecard(string initialInput);
 
 
 

@@ -62,14 +62,6 @@ inline const std::vector<std::vector<std::string>> UI_DICE_MATRIX = {
     UI_DIE_IMAGE_6
 };
 
-
-
-
-//extern const char UI_TITLE_CARD[];
-//
-//
-//extern const char UI_PROMPT_TO_KEEP[];
-
 //"Yahtzee"
 inline const char* UI_TITLE_CARD = R"(
 -------------------------------------------------------\
@@ -86,16 +78,15 @@ inline const char* UI_TITLE_CARD = R"(
 )";
 
 
-inline const char* UI_PROMPT_TO_KEEP =
-R"(
-Do you want to keep this hand and add it to the score card?
-[1] - Keep hand
-[2] - Roll again
-)";
+//inline const char* UI_PROMPT_TO_KEEP =
+//R"(
+//Do you want to keep this hand and add it to the score card?
+//[1] - Keep hand
+//[2] - Roll again
+//)";
 
 
-//The scoreDataVector
-
+//The score card image
 //Note that changing this will destroy the printScoreCard() method
 inline const std::vector<std::string> UI_SCORECARD_ART = {
 "==========================",

@@ -1,10 +1,10 @@
 
-//these were here but they are either included in previous ones or unused
-//@TODO: Delete before considering project done
-//#include <vector>
-//#include <cstdlib>
-//#include <string>
-//#include <algorithm>
+//these are included elsewhere and so aren't technically needed
+//but I am leaving them here because they are used in this file
+#include <vector>
+#include <cstdlib>
+#include <string>
+#include <algorithm>
 
 #include <random>
 #include <iostream>
@@ -35,6 +35,9 @@ Player::Player(int playerID, int MAX_HAND_SIZE)
 //takes the current hand and iterates
 void Player::printCurrentHand()
 {
+
+	cout << "\n"; //for formatting
+	
 	//print lines sequentially from UI_DICE_MATRIX
 	//dice are 5 lines tall
 	for (int j = 0; j < 5; j++) 
@@ -167,7 +170,7 @@ void Player::printScoreCard()
 
 		}
 
-		cout << "\n"; //@DEBUG
+		cout << "\n";
 	}
 }
 
@@ -190,14 +193,14 @@ void Player::FullNewHand()
 
 //--------------------------------------------------------------------------------------//
 
-//@TODO replace with a GUI eventually
+
 vector<int> Player::askForNumbersToRemove()
 {
 	vector<int> numbersToRemove = {};
 	string input = "";
 	int singularValue;
 
-	cout << "\nPlease enter numbers to remove:\n";
+	cout << "\nPlease enter numbers to remove (as integers with spaces between them):\n";
 	getline(cin, input);
 
 	stringstream ss(input); //turns the input into a stream like cin
@@ -239,52 +242,42 @@ void Player::removeAndRefill()
 //--------------------------------------------------------------------------------------//
 
 //takes user input for where to place the current hand in the scoreDataVector and then does that
-void Player::placeHandInScorecard()
+void Player::placeHandInScorecard(string initialInput)
 {
-	//@TODO: Delete once this logic works
-	//clearScreen();
-	printCurrentHand();
-	printScoreCard();
-
 	int ScorePlacedExitCode = 1;
+	char cardPlaceSelected = initialInput[0];
 	while (ScorePlacedExitCode != 0)
 	{
-		char cardPlaceSelected = '\0'; //placeholder null character
-		cin >> cardPlaceSelected; //use cin because we only want one character
+		//first try to execute the function with the given input
+		//if that fails, cin at bottom of while loop
 		cardPlaceSelected = toupper(cardPlaceSelected); //caps insensitve
 
 		int inputAsInt = cardPlaceSelected - '0'; //ASCII math
 		switch (cardPlaceSelected) {
 		case '1': case '2': case '3':
 		case '4': case '5': case '6':
-			ScorePlacedExitCode = setUpperSection(inputAsInt);
-			break;
-		case 'Q':
-			ScorePlacedExitCode = set3oaK();
-			break;
-		case 'W':
-			ScorePlacedExitCode = set4oaK();
-			break;
-		case 'E':
-			ScorePlacedExitCode = setFullHouse();
-			break;
-		case 'R':
-			ScorePlacedExitCode = setSmallStraight();
-			break;
-		case 'T':
-			ScorePlacedExitCode = setLargeStraight();
-			break;
-		case 'Y':
-			ScorePlacedExitCode = setYahtzee();
-			break;
-		case 'U':
-		ScorePlacedExitCode = setChance();
-			break;
+			ScorePlacedExitCode = setUpperSection(inputAsInt); break;
+		case 'Q':  ScorePlacedExitCode = set3oaK();            break;
+		case 'W':  ScorePlacedExitCode = set4oaK();            break;
+		case 'E':  ScorePlacedExitCode = setFullHouse();       break;
+		case 'R':  ScorePlacedExitCode = setSmallStraight();   break;
+		case 'T':  ScorePlacedExitCode = setLargeStraight();   break;
+		case 'Y':  ScorePlacedExitCode = setYahtzee();         break;
+		case 'U':  ScorePlacedExitCode = setChance();          break;
 		default:
-			//this shouldn't be reached unless input validation fails
-			cout << "unexpected input passed to score placement logic\n";
+			//if the user inputs anything other than 0, that value will be passed to this
+			//this will do nothing and let the loop continue until a valid place is selected
 			break;
 		}
+
+		//don't prompt for input if we succeeded above
+		if (ScorePlacedExitCode != 0)
+		{
+			//if we got an invalid value, get a new input
+			cout << "Please enter a score card position.\n";
+			cin >> cardPlaceSelected;
+		}
+
 
 	}
 
@@ -701,7 +694,7 @@ int Player::setYahtzee()
 	numberOnTheDie = currentHand[0];
 
 	//only allow to add things if the scoreDataVector slot is empty
-	if (scoreDataVector[YahtzeeIndex] == Null)
+	if (scoreDataVector[YahtzeeIndex] != Null)
 	{
 			cout << "There is already something in this score space\n";
 			return 2;
@@ -731,13 +724,13 @@ int Player::setYahtzee()
 				}
 			}
 		}
-		else if (scoreDataVector[YahtzeeIndex] == Null)
-		{
-			scoreDataVector[YahtzeeIndex] = 50; //Yahtzee is worth 50 points
-			return 0;
-		}
 		//@TODO: Add bonus yahtzee here
+
 	}
+
+	//if loop never returned, it must be a valid Yahtzee
+	scoreDataVector[YahtzeeIndex] = 50; //Yahtzee is worth 50 points
+	return 0;
 		
 	return -1; //unreachable fallthrough return
 }

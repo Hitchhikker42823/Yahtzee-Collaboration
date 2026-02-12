@@ -3,15 +3,10 @@ using namespace std;
 #include "UIElements.h"
 #include "FunctionDeclarations.h"
 #include "PlayerClass.h"
-//@TODO Back Button from Score Card Entry
-//@TODO fix stringstream on score placement selection
-//@TODO fix softlock if scoreDataVector fills in < 13 rounds
-//@TODO comment way more
-//@TODO enum the scoreDataVector locations
-//@TODO have scoreDataVector search for a string to make it more resilient
-//@TODO: keeping last hand causes double score entry
-//@TODO: What the hell is a bonus yahtzee
-//@TODO: reduce magic numbers by defining a bunch of constants
+//@TODO fix softlock if scoreDataVector fills in < 13 rounds (bonus yahtzee or glitch)
+//@TODO have scoreCard printing search for a string to make it more resilient
+//@TODO What the hell is a bonus yahtzee
+//@TODO investigate straight logic
 
 int main()
 {
@@ -27,7 +22,7 @@ int main()
 	while (roundsRemaining > 0)
 	{
 		roundsRemaining--; //advance turn count
-
+		bool handPlaced = false; //flag set when hand placed. if we run out of rerolls without placing, force placement.
 
 		player0.FullNewHand(); //Roll a whole new hand
 		int rerollsRemaining = 2; //start a new turn
@@ -41,6 +36,7 @@ int main()
 		string dummyString = ""; //to wait for input
 		getline(cin, dummyString);
 
+
 		while (rerollsRemaining > 0)
 		{
 
@@ -49,44 +45,48 @@ int main()
 			//print hand
 			clearScreen();
 			player0.printCurrentHand();
+			player0.printScoreCard();
 			cout << "Rolls Left: " << rerollsRemaining +1 << "\n"; //1 index vs 0 index
 			
-			//logic to break the while loop if the user wants to keep their hand
-			cout << UI_PROMPT_TO_KEEP;
+
+			cout << "\nEnter \"0\" to reroll part of the hand.\nOtherwise, enter the corresponding key on the score card.\n";
 			string userInput = "";
-			while (userInput != "1" && userInput != "2")
-			{
-				userInput = "";
-				getline(cin, userInput);
-				StoUpper(userInput);
-			}
+			getline(cin, userInput);
+			StoUpper(userInput);
 
-			//if user selected to keep their hand, do the logic to verify and 
-			if (userInput == "1")
+			//@TODO if player inputs something other than 0 but not a score place
+			//if the player input 0, reroll part of the hand
+			if (userInput == "0")
 			{
+				clearScreen();
+				player0.printCurrentHand();
 				player0.printScoreCard();
-				player0.placeHandInScorecard();
-				break; //after succeeding in placing the new score, 
 
-			}
-
-			//if the player does not want to keep this hand,
-			//remove the selected dice and reroll
-			else if (userInput == "2")
-			{
 				player0.removeAndRefill();
 			}
 
+			//if the player input anything else, go on to score playcement logic
+			else
+			{
+				player0.placeHandInScorecard(userInput);
+				handPlaced = true;
+				break; //after succeeding in placing the new score, 
+			}
+
+
+
 		}
 
-		//if we reach the end of 3 rolls, force to place in scoreDataVector
-		if (rerollsRemaining == 0)
+		//if we reach the end of 3 rolls without saving the score, force to place in scoreDataVector
+		if (!handPlaced)
 		{
 			clearScreen();
 			player0.printCurrentHand();
 			player0.printScoreCard();
-			cout << "You have run out of rerolls. Please choose something to place this hand in.\n";
-			player0.placeHandInScorecard();
+
+			cout << "You have run out of rerolls.\n";
+
+			player0.placeHandInScorecard("\0"); //call score placement logic with null intial value
 		}
 
 

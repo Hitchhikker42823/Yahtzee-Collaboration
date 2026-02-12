@@ -4,7 +4,6 @@
 #include <vector>
 
 
-//@TODO do a buttload of work to make all dice print on one line
 
 //Dice
 extern const char UI_DIE_IMAGE_1[] = R"(
