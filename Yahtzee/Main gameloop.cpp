@@ -4,9 +4,8 @@ using namespace std;
 #include "FunctionDeclarations.h"
 #include "PlayerClass.h"
 //@TODO fix softlock if scoreDataVector fills in < 13 rounds (bonus yahtzee or glitch)
-//@TODO have scoreCard printing search for a string to make it more resilient
 //@TODO What the hell is a bonus yahtzee
-//@TODO investigate straight logic
+//@TODO if player inputs something other than 0 but not a score place, it just passes to the placement
 
 int main()
 {
@@ -21,7 +20,6 @@ int main()
 
 	while (roundsRemaining > 0)
 	{
-		roundsRemaining--; //advance turn count
 		bool handPlaced = false; //flag set when hand placed. if we run out of rerolls without placing, force placement.
 
 		player0.FullNewHand(); //Roll a whole new hand
@@ -29,12 +27,11 @@ int main()
 		
 		clearScreen();
 		cout << "A new round has begun\n";
-		cout << "Rounds remaining: " << roundsRemaining +1 << "\n"; //1 index vs 0 index
+		cout << "Rounds remaining: " << roundsRemaining-- << "\n"; //1 index vs 0 index
 
 		//it feels a lot better if you press a key for the first hand
 		cout << "Press enter to roll the first set of dice\n";
-		string dummyString = ""; //to wait for input
-		getline(cin, dummyString);
+		cin.get(); //waits for the user to press enter and returns nothing
 
 
 		while (rerollsRemaining > 0)
@@ -54,7 +51,6 @@ int main()
 			getline(cin, userInput);
 			StoUpper(userInput);
 
-			//@TODO if player inputs something other than 0 but not a score place
 			//if the player input 0, reroll part of the hand
 			if (userInput == "0")
 			{

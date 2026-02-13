@@ -82,6 +82,9 @@ void Player::printCurrentHand()
 
 //--------------------------------------------------------------------------------------//
 
+//I apologize that this is full of magic numbers but I don't expect the score card graphic
+//  to change any time soon and adding extra logic to scan through the vector of strings
+//  feels unnecessary compared to just having the indicies of important locations here
 void Player::printScoreCard()
 {
 	//top section sum
@@ -405,7 +408,7 @@ int Player::set3oaK()
 	for (int j = 0; j < 6; j++)
 	{
 		//if we didn't count to 3oaK for the last value, reset the coutner
-		if (count < 3) { count = 0; }
+		if (count < 3) { count = 0; runningTotal = 0; }
 
 		for (int i = 0; i < MAX_HAND_SIZE; i++)
 		{
@@ -588,27 +591,36 @@ int Player::setSmallStraight()
 	//sort from <algorithm> does smallest to largest
 	sort(currentHand.begin(), currentHand.end());
 
-	int count = 0;
-
-	for (int i = 0; i < MAX_HAND_SIZE-1; i++)
+	//note 1 indext streak for readability
+	int streakCounter = 1;
+	for (int i = 0; i < (MAX_HAND_SIZE - 1); i++)
 	{
+		//iterate
 		if (currentHand[i] == currentHand[i + 1] - 1)
 		{
-			count++;
+			streakCounter++;
 		}
 		else if (currentHand[i] == currentHand[i + 1])
 		{
-			//do nothing if we get duplicates in the middle of the straight
-			//@TODO redo this?
+			//do nothing if it's a duplicate of the next value
+			//don't reset the streak
 		}
 		else
 		{
-			count = 0;
-		} //@DEBUG this logic might not be sound
+			streakCounter = 1;
+		}
+
+		//valid small straight
+		if (streakCounter == 4)
+		{
+			scoreDataVector[SmStraight] = 30; //A small straight is worth 30 points
+			return 0;
+		}
 	}
 
-	//confrim a zero
-	if (count < 4)
+	//if statement technically not needed because if it was >= 4 it would have returned
+	//if we reach this point it is not a valid small straight
+	if (streakCounter < 4)
 	{
 		cout << "This is not a small straight. Are you sure you want to zero this? (Y/N)\n";
 
@@ -627,12 +639,6 @@ int Player::setSmallStraight()
 				return 1;
 			}
 		}
-	}
-	//valid small straight
-	else
-	{
-		scoreDataVector[SmStraight] = 30; //A small straight is worth 30 points
-		return 0;
 	}
 
 	return -1; //unreachable fallthrough return
