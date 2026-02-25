@@ -126,6 +126,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="FunctionDefinitions.cpp" />
     <ClCompile Include="Main gameloop.cpp" />
     <ClCompile Include="PlayerClass.cpp" />
     <ClCompile Include="UIElements.cpp" />

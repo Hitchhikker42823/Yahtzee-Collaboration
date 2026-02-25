@@ -4,8 +4,12 @@
 class Player {
 
 public:
+	//Constants initialized with the class
+	static const int MAX_HAND_SIZE = 5;
+	const string PLAYER_NAME_STRING;
+
 	//Constructor
-	Player(int playerID = 0, int MAX_HAND_SIZE = 5);
+	Player(string PLAYER_NAME_STRING = "Default Player Name");
 
 	//takes the current hand and iterates through it to print it
 	void printCurrentHand();
@@ -29,14 +33,13 @@ public:
 	// validates the potential score, and then enters the
 	// value of the hand into  std::vector<int> scoreDataVector
 	void placeHandInScorecard(string initialInput);
-
+	
+	//checks whether the player's scorecard is completely full
+	//once all players' cards are completley full, the game is over
+	bool isScoreCardFull();
 
 
 private:
-	//Constants initialized with the class
-	const int playerID;
-	const int MAX_HAND_SIZE;
-
 
 	//just to make it clearer that -1 is null
 	const enum Null { Null = -1 };

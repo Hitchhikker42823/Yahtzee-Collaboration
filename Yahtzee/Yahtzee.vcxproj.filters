@@ -27,6 +27,9 @@
     <ClCompile Include="UIElements.cpp">
       <Filter>Resource Files</Filter>
     </ClCompile>
+    <ClCompile Include="FunctionDefinitions.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="FunctionDeclarations.h">

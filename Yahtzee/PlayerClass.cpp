@@ -1,11 +1,12 @@
 
-//these are included elsewhere and so aren't technically needed
+//these are included elsewhere in the chain and so aren't technically needed
 //but I am leaving them here because they are used in this file
 #include <vector>
 #include <cstdlib>
 #include <string>
 #include <algorithm>
 
+//necessary inclusions
 #include <random>
 #include <iostream>
 #include <sstream>
@@ -23,9 +24,8 @@ using namespace std;
 //									Public Methods										//
 //--------------------------------------------------------------------------------------//
 
-Player::Player(int playerID, int MAX_HAND_SIZE)
-	: playerID(playerID), MAX_HAND_SIZE(MAX_HAND_SIZE) //initializes constants
-	//theoretically we can have hand size other than 5, but then scoring becomes hard
+Player::Player(string PLAYER_NAME_STRING)
+	: PLAYER_NAME_STRING(PLAYER_NAME_STRING) //initializes constants
 {
 	//blank constructor body for now
 }
@@ -278,13 +278,33 @@ void Player::placeHandInScorecard(string initialInput)
 		{
 			//if we got an invalid value, get a new input
 			cout << "Please enter a score card position.\n";
-			cin >> cardPlaceSelected;
+			
+			string dummyInputStr = "";
+			cin >> dummyInputStr; //intermediary string
+			cardPlaceSelected = dummyInputStr[0]; //only take first character
 		}
 
 
 	}
 
 	return;
+}
+
+//checks whether the player's scorecard is completely full
+//once all players' cards are completley full, the game is over
+bool Player::isScoreCardFull()
+{
+	//loop through to look for a null value
+	for (int i = 0; i < scoreDataVector.size() -1; i++) //"-1" == don't count the bonus yahtzee
+	{
+		if (scoreDataVector[i] == Null)
+		{
+			return false;
+		}
+	}
+
+	//if no null was found, the card is full
+	return true;
 }
 
 //--------------------------------------------------------------------------------------//

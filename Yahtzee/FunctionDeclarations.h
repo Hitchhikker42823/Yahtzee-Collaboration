@@ -3,23 +3,23 @@
 #include <string>
 #include <iostream>
 
-//A function to convert a string to all uppercase
-//note that unlike stoi() and similar, this is pass by reference and modifies the original string
-inline void StoUpper(std::string& inputString)
-{
-	for (char& c : inputString) {
-		c = std::toupper(c);
-	}
+#include "PlayerClass.h"
 
-	return;
-}
-
-//@TODO is this necessary if its so short?
 //Asks the system to execute "cls"
+//so small that it can be inline and defined here
 inline void clearScreen() {
 	system("cls");
 }
 
+//A function to convert a string to all uppercase
+//note that unlike stoi() and similar, this is pass by reference and modifies the original string
+void StoUpper(std::string& inputString);
 
-//---------NOTE: thus far only inline functions are used, so we can just define them in the header.
-//-------------- Uncomment if these become not inline or otherwise
+//iterates to check if all score cards are full
+bool areAllScoreCardsFull(int playerCount, vector<Player>& listOfPlayers);
+
+//prompts for and returns number of players to add to the game
+int getPlayerCount();
+
+//instantiates the player class a specified number of times
+void createPlayers(int playerCount, vector<Player>& listOfPlayers);
