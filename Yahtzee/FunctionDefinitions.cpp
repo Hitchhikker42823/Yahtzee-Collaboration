@@ -1,3 +1,11 @@
+/*------------------------------------------------------------------------------------------------------/
+/ @Author:          Aidan Bernardo
+/
+/ @Date Modified:   3/24/26
+/
+/ @Description:     Contains a few definitions for functions that should not be member methods of the 
+/					player class. Used mostly in the main gameloop.
+/------------------------------------------------------------------------------------------------------*/
 
 
 #include <vector>
@@ -6,6 +14,7 @@ using namespace std;
 #include "UIElements.h"
 #include "FunctionDeclarations.h"
 #include "PlayerClass.h"
+
 
 //A function to convert a string to all uppercase
 //note that unlike stoi() and similar, this is pass by reference and modifies the original string
@@ -23,7 +32,7 @@ void StoUpper(std::string& inputString)
 //iterates to check if all score cards are full
 bool areAllScoreCardsFull(int playerCount, vector<Player>& listOfPlayers)
 {
-	for (int i = 1; i <= playerCount; i++)
+	for (int i = 0; i < playerCount; i++)
 	{
 		//if any are not full, we can immediately quit
 		if (listOfPlayers[i].isScoreCardFull() == false)
@@ -40,7 +49,7 @@ bool areAllScoreCardsFull(int playerCount, vector<Player>& listOfPlayers)
 
 int getPlayerCount()
 {
-	//get user input until they correctly input a positive integer
+	//get user input until they correctly input a positive int-eger
 	cout << "\n\nHow many players should be added?: ";
 	int playerCount = 0;
 	while (playerCount <= 0)

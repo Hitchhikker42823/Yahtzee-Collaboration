@@ -1,3 +1,12 @@
+/*------------------------------------------------------------------------------------------------------/
+/ @Author:          Aidan Bernardo
+/
+/ @Date Modified:   3/24/26
+/
+/ @Description:     Contains definitions for functions and member variables of the player class. See the
+/					PlayerClass.h file for the declaration and overall structure of the class.
+/------------------------------------------------------------------------------------------------------*/
+
 
 //these are included elsewhere in the chain and so aren't technically needed
 //but I am leaving them here because they are used in this file
@@ -16,8 +25,6 @@ using namespace std;
 #include "UIElements.h"
 #include "FunctionDeclarations.h"
 #include "PlayerClass.h"
-
-
 
 
 //--------------------------------------------------------------------------------------//
@@ -272,8 +279,19 @@ void Player::placeHandInScorecard(string initialInput)
 			//this will do nothing and let the loop continue until a valid place is selected
 			break;
 		}
-
+		
+		if (ScorePlacedExitCode == 3)
+		{
+			cout << "Bonus Yahtzee!\n";
+			ScorePlacedExitCode = 0;
+		}
+		
 		//don't prompt for input if we succeeded above
+		if (ScorePlacedExitCode == 2)
+		{
+			cout << "There is already something in this score space\n";
+		}
+		
 		if (ScorePlacedExitCode != 0)
 		{
 			//if we got an invalid value, get a new input
@@ -290,6 +308,8 @@ void Player::placeHandInScorecard(string initialInput)
 	return;
 }
 
+//--------------------------------------------------------------------------------------//
+
 //checks whether the player's scorecard is completely full
 //once all players' cards are completley full, the game is over
 bool Player::isScoreCardFull()
@@ -305,6 +325,34 @@ bool Player::isScoreCardFull()
 
 	//if no null was found, the card is full
 	return true;
+}
+
+//--------------------------------------------------------------------------------------//
+
+//allow the player to manually set their hand for debug or cheating purposes. Very similar to askForNumbersToRemove()
+void Player::debugManualHand()
+{
+	string input = "";
+	int singularValue;
+	currentHand = {};
+
+	cout << "\nEnter 5 desired numbers for your hand (as integers with spaces between them):\n";
+	getline(cin, input);
+
+	stringstream ss(input); //turns the input into a stream like cin
+	while (ss >> singularValue && (currentHand.size() < 5 )) //keep going until we fail to store a valid value
+	{
+		if (singularValue >= 1 && singularValue <= 6)
+		{
+			currentHand.push_back(singularValue);
+		}
+	}
+
+	//make sure the hand is full by filling it with sixes until full
+	while (currentHand.size() < 5)
+	{
+		currentHand.push_back(6);
+	}
 }
 
 //--------------------------------------------------------------------------------------//
@@ -361,7 +409,6 @@ int  Player::setUpperSection(int sectionToSet)
 	if (scoreDataVector[sectionToSet - 1] != Null)
 	{
 		//there was already something there
-		cout << "There is already something in this score space\n";
 		return 2;
 	}
 
@@ -419,16 +466,14 @@ int Player::set3oaK()
 	//only allow to add things if the scoreDataVector slot is empty
 	if (scoreDataVector[ThreeOaK] != Null)
 	{
-		cout << "There is already something in this score space\n";
+
 		return 2;
 	}
 
 	//if score slot is empty, do the math
 	//for each value a die could take
-	for (int j = 0; j < 6; j++)
+	for (int j = 1; j <= 6; j++)
 	{
-		//if we didn't count to 3oaK for the last value, reset the coutner
-		if (count < 3) { count = 0; runningTotal = 0; }
 
 		for (int i = 0; i < MAX_HAND_SIZE; i++)
 		{
@@ -437,12 +482,15 @@ int Player::set3oaK()
 			{
 				count++;
 			}
-			//@DEBUG this logic might not be sound?
 
 		}
+
+		//if we didn't count to 3oaK for the last value, reset the coutner
+		if (count >= 3) { break; }
+		else { count = 0; runningTotal = 0; }
 	}
 
-	//user must confrim they want to zero a space
+	//user must confirm they want to zero a space
 	if (count < 3)
 	{
 		cout << "This is not a 3 of a kind. Are you sure you want to zero this? (Y/N)\n";
@@ -485,16 +533,14 @@ int Player::set4oaK()
 	//only allow to add things if the scoreDataVector slot is empty
 	if (scoreDataVector[FourOaK] != Null)
 	{
-		cout << "There is already something in this score space\n";
+
 		return 2;
 	}
 
 	//if score slot is empty, do the math
 	//for each value a die could take
-	for (int j = 0; j < 6; j++)
+	for (int j = 1; j <= 6; j++)
 	{
-		//if we didn't count to 4oaK for the last value, reset the coutner
-		if (count < 4) { count = 0; }
 
 		for (int i = 0; i < MAX_HAND_SIZE; i++)
 		{
@@ -503,9 +549,12 @@ int Player::set4oaK()
 			{
 				count++;
 			}
-			//@DEBUG this logic might not be sound?
 
 		}
+
+		//if we didn't count to 4oaK for the last value, reset the coutner
+		if (count >= 4) { break; }
+		else { count = 0; runningTotal = 0; }
 	}
 		
 	//if we didn't count 4 dice of the same kind, it's not valid
@@ -548,7 +597,7 @@ int Player::setFullHouse()
 	//only allow to add things if the scoreDataVector slot is empty
 	if (scoreDataVector[FullHouse] != Null)
 	{
-		cout << "There is already something in this score space\n";
+
 		return 2;
 	}
 
@@ -603,7 +652,7 @@ int Player::setSmallStraight()
 	//only allow to add things if the scoreDataVector slot is empty
 	if (scoreDataVector[SmStraight] != Null)
 	{
-		cout << "There is already something in this score space\n";
+
 		return 2;
 	}
 
@@ -673,7 +722,7 @@ int Player::setLargeStraight()
 	//only allow to add things if the scoreDataVector slot is empty
 	if (scoreDataVector[LgStraight] != Null)
 	{
-		cout << "There is already something in this score space\n";
+
 		return 2;
 	}
 
@@ -718,45 +767,88 @@ int Player::setYahtzee()
 {
 	int numberOnTheDie = 0;
 	numberOnTheDie = currentHand[0];
-
-	//only allow to add things if the scoreDataVector slot is empty
-	if (scoreDataVector[YahtzeeIndex] != Null)
-	{
-			cout << "There is already something in this score space\n";
-			return 2;
-	}
 	
-	//@TODO investigate this logic
 	//if score slot is empty, do the math
 	for (int i = 0; i < MAX_HAND_SIZE; i++)
 	{
 		if (currentHand[i] != numberOnTheDie)
 		{
-			cout << "This is not a Yahtzee. Are you sure you want to zero this? (Y/N)\n";
-
-			while (true) //broken by if/else
+			//if it's not a yahtzee and the slot is full, indicate that
+			if (scoreDataVector[YahtzeeIndex] != Null)
 			{
-				string userInput = "";
-				std::getline(cin, userInput);
-				StoUpper(userInput);
-				if (userInput == "Y")
+		 
+				return 2;
+			}
+			//if it's not a yahtzee and the slot is free, confirm a zero
+			else
+			{
+				cout << "This is not a Yahtzee. Are you sure you want to zero this? (Y/N)\n";
+
+				while (true) //broken by if/else
 				{
-					scoreDataVector[YahtzeeIndex] = 0;
-					return 0;
-				}
-				else if (userInput == "N")
-				{
-					return 1;
+					string userInput = "";
+					std::getline(cin, userInput);
+					StoUpper(userInput);
+					if (userInput == "Y")
+					{
+						scoreDataVector[YahtzeeIndex] = 0;
+						return 0;
+					}
+					else if (userInput == "N")
+					{
+						return 1;
+					}
 				}
 			}
 		}
-		//@TODO: Add bonus yahtzee here
 
 	}
 
-	//if loop never returned, it must be a valid Yahtzee
-	scoreDataVector[YahtzeeIndex] = 50; //Yahtzee is worth 50 points
-	return 0;
+	//if the above didn't return, it must be a valid yahtzee
+	//if a valid yahtzee and the slot is free, place it in the slot
+	if (scoreDataVector[YahtzeeIndex] == Null)
+	{
+		scoreDataVector[YahtzeeIndex] = 50; //Yahtzee is worth 50 points
+		return 0;
+	}
+	//if it's a valid yahtzee and we already have a yahtzee, bonus yahtzee
+	else
+	{
+		int handTotal = 0;
+		for (int i = 0; i < currentHand.size(); i++)
+		{
+			handTotal += currentHand[i];
+		}
+		//set to zero the first time before adding 100
+		if (scoreDataVector[BnsYahtzee] == -1) { scoreDataVector[BnsYahtzee] = 0; }
+		//add 100 for every bonusYahtzee
+		scoreDataVector[BnsYahtzee] += 100;
+
+		int exitCodeSuccessful = setUpperSection(numberOnTheDie);
+		if (exitCodeSuccessful == 2)
+		{
+			for (int i = 6; i < scoreDataVector.size(); i++)
+			{
+				if (scoreDataVector[i] == Null)
+				{
+					switch (i) {
+					case ThreeOaK: { scoreDataVector[ThreeOaK] = handTotal; break; }
+					case FourOaK: { scoreDataVector[FourOaK] = handTotal; break; }
+					case FullHouse: { scoreDataVector[FullHouse] = 25; break; }
+					case SmStraight: { scoreDataVector[SmStraight] = 30; break; }
+					case LgStraight: { scoreDataVector[LgStraight] = 40; break; }
+					case YahtzeeIndex: //do nothing, we already know this is a bonus yahtzee
+					case Chance: { scoreDataVector[Chance] = handTotal; break; }
+					default:
+					{ cout << "Unexpected value in bonus yahtzee score placement"; }
+					}
+
+					break; //only fill one score slot at a time
+				}
+			}
+		}
+		return 3;
+	}
 		
 	return -1; //unreachable fallthrough return
 }
@@ -774,7 +866,7 @@ int Player::setChance()
 
 	if (scoreDataVector[Chance] != Null)
 	{
-		cout << "There is already something in this score space\n";
+ 
 		return 2;
 	}
 	else

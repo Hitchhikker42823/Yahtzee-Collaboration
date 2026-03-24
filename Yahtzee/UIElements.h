@@ -1,6 +1,17 @@
+/*------------------------------------------------------------------------------------------------------/
+/ @Author:          Aidan Bernardo
+/
+/ @Date Modified:   3/24/26
+/
+/ @Description:     Contains string vectors that can be printed to the command line in various ways to
+/                   generate the necessary graphics.
+/------------------------------------------------------------------------------------------------------*/
+
+
 #pragma once
 #include <string>
 #include <vector>
+
 
 //Dice
 inline const std::vector<std::string> UI_DIE_IMAGE_1 = {

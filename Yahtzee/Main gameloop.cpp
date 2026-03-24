@@ -1,18 +1,23 @@
+/*------------------------------------------------------------------------------------------------------/
+/ @Author:          Aidan Bernardo
+/
+/ @Date Modified:   3/24/26
+/
+/ @Description:     Contains the main loop executed when the program runs. Controls the turn order and
+/					handles multiple player class instances.
+/------------------------------------------------------------------------------------------------------*/
 
 using namespace std;
 #include "UIElements.h"
 #include "FunctionDeclarations.h"
 #include "PlayerClass.h"
-//@TODO What the hell is a bonus yahtzee
-//@TODO if player inputs something other than 0 but not a score place, it just passes to the placement
-//@TODO extend to multiple players by wrapping the game in a class and making a vector of players -- would need to print player at start of each turn
+
+//for manually selecting hand. Useful for debugging
+const string cheatCode = "IWANTTOCHEAT";
 
 int main()
 {
 	cout << UI_TITLE_CARD << "\n";
-	//cout << "Press enter to contiue...";
-	//string dummyString = ""; //to wait for input
-	//getline(cin, dummyString);
 
 	//a vector that holds all the players
 	std::vector<Player> listOfPlayers;
@@ -30,7 +35,7 @@ int main()
 		int rerollsRemaining = 2; //start a new turn
 		
 		clearScreen();
-		cout << "A new round has begun\n";
+		cout << listOfPlayers[currentPlayerID].PLAYER_NAME_STRING << "'s turn.\n";
 
 		//it feels a lot better if you press a key for the first hand
 		cout << "Press enter to roll the first set of dice\n";
@@ -43,7 +48,7 @@ int main()
 			rerollsRemaining--; //advance number of rolls per turn
 			
 			//print hand
-			clearScreen();
+		    clearScreen();
 			listOfPlayers[currentPlayerID].printCurrentHand();
 			listOfPlayers[currentPlayerID].printScoreCard();
 			cout << "Rolls Left: " << rerollsRemaining +1 << "\n"; //1 index vs 0 index
@@ -54,8 +59,16 @@ int main()
 			getline(cin, userInput);
 			StoUpper(userInput);
 
+			//if player inputs cheat code, allow them to manually pick their hand.
+			//useful mainly for debug purposes
+			if (userInput == cheatCode)
+			{
+				listOfPlayers[currentPlayerID].debugManualHand();
+				
+			}
+
 			//if the player input 0, reroll part of the hand
-			if (userInput == "0")
+			else if (userInput == "0")
 			{
 				clearScreen();
 				listOfPlayers[currentPlayerID].printCurrentHand();

@@ -1,9 +1,19 @@
+/*------------------------------------------------------------------------------------------------------/
+/ @Author:          Aidan Bernardo
+/
+/ @Date Modified:   3/24/26
+/
+/ @Description:     The declarations for the general functins not part of the player class.
+/------------------------------------------------------------------------------------------------------*/
+
+
 #pragma once
 
 #include <string>
 #include <iostream>
 
 #include "PlayerClass.h"
+
 
 //Asks the system to execute "cls"
 //so small that it can be inline and defined here

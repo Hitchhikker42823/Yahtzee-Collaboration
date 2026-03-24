@@ -1,3 +1,13 @@
+/*------------------------------------------------------------------------------------------------------/
+/ @Author:          Aidan Bernardo
+/
+/ @Date Modified:   3/24/26
+/
+/ @Description:     The overall structure of the class that defines a player. Contains their name, score,
+/					and any methods necessary to alter their score. Instantiated in the main gameloop.
+/------------------------------------------------------------------------------------------------------*/
+
+
 #pragma once
 
 
@@ -38,6 +48,8 @@ public:
 	//once all players' cards are completley full, the game is over
 	bool isScoreCardFull();
 
+	//Allows the user to manually set their hand for debugging or cheating purposes
+	void debugManualHand();
 
 private:
 
